@@ -1,0 +1,223 @@
+/**
+ * common
+ */
+.menus-container{
+  background: #f2f2f2;
+  height: 100%;
+  width: 100%;
+}
+.menus-content{
+  padding-top: 17px;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+.content {
+  background: #ffffff;
+}
+.bs-bb{
+  box-sizing: border-box;
+}
+.p-tb-10{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.p-lr-14{
+  padding-left: 14px;
+  padding-right: 14px;
+}
+.p-t-10{
+  padding-top: 10px;
+}
+.p-b-16{
+  padding-bottom: 16px;
+}
+.m-r-18{
+  margin-right: 18px;
+}
+.f-s-15{
+  font-size: 15px;
+}
+.f-s-18{
+  font-size: 18px;
+}
+.f-s-20{
+  font-size: 20px;
+}
+.col-03{
+  color: #030303;
+}
+.col-05{
+  color: #050505;
+}
+.col-fa3a49{
+  color: #fa3a49;
+}
+.m-t-25{
+  margin-top: 25px;
+}
+.m-t-50{
+  margin-top: 50px;
+}
+.m-b-10{
+  margin-bottom: 10px;
+}
+.link{
+  color: #4690D9;
+}
+.hr{
+  height: 1px;
+  background: #eeeeee;
+  margin-top: 16px;
+  margin-bottom: 10px;
+}
+.b-b-1{
+  border-bottom: 1px solid #eeeeee;
+}
+.enable-btn{
+  background:rgba(3,157,128,1);
+  opacity:1;
+  border-radius:8px;
+  padding: 8px;
+  color:rgba(255,255,255,1);
+}
+.disable-btn{
+  padding: 8px;
+  background:rgba(158,158,158,1);
+  opacity:1;
+  border-radius:8px;
+  color:rgba(255,255,255,1);
+}
+/**
+ * ygc - order -detail
+ */
+.price{
+  font-family:Microsoft YaHei UI;
+  font-weight:400;
+  line-height:22px;
+  color:rgba(250,58,73,1);
+  margin-left: 22px;
+}
+.pay-btn{
+  width:335px;
+  height:52px;
+  background:rgba(3,157,128,1);
+  opacity:1;
+  border-radius:8px;
+  font-size:17px;
+  font-family:PingFangSC-Semibold;
+  line-height:24px;
+  color:rgba(255,255,255,1);
+  text-align: center;
+  line-height: 52px;
+}
+
+/**
+ * ygc - menus
+ */
+.bottom-cart{
+  bottom: 0;
+  left: 0;
+  height: 52px;
+  background: #039D80;
+  width: 100%;
+}
+.cart-icon{
+  margin-left: 30px;
+}
+.bottom-cart .left{
+  flex: 1;
+}
+.amount{
+  font-size:17px;
+  font-family:PingFangSC-Semibold;
+  color:rgba(255,255,255,1);
+  line-height:24px;
+  margin-left: 26px;
+}
+.cart-badge{
+  width:18px;
+  height:18px;
+  background:rgba(222,100,37,1);
+  border:1px solid rgba(255,255,255,1);
+  border-radius:50%;
+  opacity:1;
+  position: absolute;
+  right: -9px;
+  top: -9px;
+  text-align: center;
+  line-height: 18px;
+  font-size:12px;
+  color: #ffffff;
+}
+.add-cart{
+  width:122px;
+  height:52px;
+  background:rgba(0,185,151,1);
+  font-size:17px;
+  font-family:PingFangSC-Semibold;
+  color:rgba(255,255,255,1);
+  opacity:1;
+  text-align: center;
+  line-height: 52px;
+}
+.bottom-cart-detail{
+  left: 0;
+  bottom: 52px;
+  width: 100%;
+}
+.cart-goods-list{
+  width: 100%;
+  padding-left: 21px;
+  padding-right: 14px;
+  background: #ffffff;
+  line-height: 60px;
+}
+.bottom-cart-detail .header{
+  height:41px;
+  background:rgba(233,233,233,1);
+  padding-left: 21px;
+  padding-right: 14px;
+}
+.header .header-1{
+  font-size:15px;
+  font-family:Microsoft YaHei UI;
+  font-weight:400;
+  line-height:18px;
+  color:rgba(3,3,3,1);
+}
+.header .header-2{
+  font-size:10px;
+  font-family:Microsoft YaHei UI;
+  font-weight:400;
+  line-height:12px;
+  color:rgba(106,106,106,1);
+}
+.clean-btn{
+  width:45px;
+  height:20px;
+  background:rgba(255,255,255,1);
+  border:1px solid rgba(219,219,219,1);
+  opacity:1;
+  border-radius:2px;
+  line-height: 20px;
+  text-align: center;
+  font-size:10px;
+  color:rgba(129,129,129,1);
+}
+.cart-goods-name{
+  width: 185px;
+  font-size:15px;
+  font-family:Microsoft YaHei UI;
+  font-weight:400;
+  color:rgba(3,3,3,1);
+}
+.cart-goods-price{
+  width: 90px;
+  font-size:15px;
+  font-family:Microsoft YaHei UI;
+  font-weight:400;
+  color:rgba(250,58,73,1);
+}
+.order-num{
+  width: 64px;
+}

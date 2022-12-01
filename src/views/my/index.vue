@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <div class="order">
+      <div class="order" @click="$router.push('/my/order')">
         <div class="order-title">
           我的订单
           <span>全部订单 ></span>

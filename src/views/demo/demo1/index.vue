@@ -19,19 +19,19 @@
     </div>
 
     <div class="hint">
-      <div class="hint-box">
+      <div class="hint-box" @click="$router.push('/my/member')">
         <img :src="member" alt="" />
         <div class="hint-text">会员中心</div>
       </div>
-      <div class="hint-box">
+      <div class="hint-box"  @click="$router.push('/demo/collect')">
         <img :src="my" alt="" />
         <div class="hint-text">我的收藏</div>
       </div>
-      <div class="hint-box">
+      <div class="hint-box" @click="$router.push('/demo/consult')">
         <img :src="shopping" alt="" />
         <div class="hint-text">商城咨询</div>
       </div>
-      <div class="hint-box">
+      <div class="hint-box" @click="$router.push('/demo/helpCenter')">
         <img :src="help" alt="" />
         <div class="hint-text">帮助中心</div>
       </div>

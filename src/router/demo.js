@@ -110,11 +110,43 @@ const appRoute = [
 		}
 	},
 	{
-		path:'/my/member',
-		name:'member',
-		component:() => import('../views/my/member/index.vue'),
+		path:'/demo/collect',
+		name:'collect',
+		component:() => import('../views/demo/collect/index.vue'),
 		meta:{
 			title:'我的收藏',
+		}
+	},
+	{
+		path:'/demo/consult',
+		name:'consult',
+		component:() => import('../views/demo/consult/index.vue'),
+		meta:{
+			title:'商城咨询',
+		}
+	},
+	{
+		path:'/demo/helpCenter',
+		name:'helpCenter',
+		component:() => import('../views/demo/helpCenter/index.vue'),
+		meta:{
+			title:'帮助中心',
+		}
+	},
+	{
+		path:'/my/order',
+		name:'order',
+		component:() => import('../views/my/order/index.vue'),
+		meta:{
+			title:'我的订单',
+		}
+	},
+	{
+		path:'/my/okShopping',
+		name:'okShopping',
+		component:() => import('../views/shopping/okShopping/index.vue'),
+		meta:{
+			title:'我的订单',
 		}
 	},
 

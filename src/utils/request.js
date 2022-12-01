@@ -8,8 +8,7 @@ import { cacheData } from '@/global'
 
 const http = Axios.create({ 
 	// api的base_url
-  baseURL: process.env.VUE_APP_BASE_API,
-  // baseURL:"http://121.40.224.41:58",
+  baseURL:'/api',
   timeout: 50000,
   // transformRequest: [function(data) {
   //   data = Qs.stringify(data)

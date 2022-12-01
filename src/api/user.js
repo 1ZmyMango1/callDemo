@@ -35,9 +35,18 @@ import http from '@/utils/request'
 
 
 // 个人信息
-export function login(){
-  return http({
-    url:'/api/User/userInfo',
-    method:'GET'
+// export function login(){
+//   return http({
+//     url:'/api/User/userInfo',
+//     method:'GET'
+//   })
+// }
+
+// 登录
+export function login(data){
+  return http ({
+    url:'/api/Login/login',
+    method:'POST',
+    data:data
   })
 }

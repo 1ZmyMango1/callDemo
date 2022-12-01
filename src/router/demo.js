@@ -134,6 +134,14 @@ const appRoute = [
 		}
 	},
 	{
+		path:'/demo/particulars',
+		name:'particulars',
+		component:() => import('../views/demo/particulars/index.vue'),
+		meta:{
+			title:'明细',
+		}
+	},
+	{
 		path:'/demo/details',
 		name:'details',
 		component:() => import('../views/demo/details/index.vue'),

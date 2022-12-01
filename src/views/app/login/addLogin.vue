@@ -29,7 +29,7 @@
         >
           <template #button>
             <div class="button" v-if="code" @click="onCode">获取验证码</div>
-            <div v-if="times">
+            <div v-else>
               <van-count-down auto-start :time="time">
                 <template #default="timeData">
                   <span class="block">{{ timeData.seconds }} s</span>
@@ -80,21 +80,19 @@ export default {
       redirect: this.$route.query.redirect,
       time: 60 * 10 * 10 * 10,
       code: true,
-      times: false,
+      // times: false,
       btnOn: true,
       btnUp: false,
       onBind: true,
       upBind: false,
-      // 我擦 页面呢
     };
   },
   created() {
-    console.log("567890-");
     this.login()
   },
   methods: {
     async login() {
-      const res = await login();
+      const res = await login({});
       console.log(res);
     },
     onClickLeft() {
@@ -104,7 +102,10 @@ export default {
     // 获取验证码
     onCode() {
       this.code = false;
-      this.times = true;
+      // this.times = true;
+      if(this.time == '00 * 00 * 00 * 00'){
+        this.code = true
+      }
     },
 
     // 绑定按钮
@@ -144,7 +145,7 @@ export default {
           account: this.account,
           passWord: this.passWord,
         };
-        let res = await login(data);
+        // let res = await login(data);
 
         if (res) {
           setToken(res.data.token);

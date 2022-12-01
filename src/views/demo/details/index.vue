@@ -48,29 +48,29 @@
       </div>
       <div class="buttom-two">
         <div class="two-left">折扣卷：0</div>
-        <div class="two-rights">明细</div>
+        <div class="two-rights" @click="$router.push('/demo/particulars')">明细</div>
         <div class="two-right">自主认购</div>
       </div>
       <div class="buttom-one">
         <div class="one-left">折扣商品：0</div>
-        <div class="one-right">明细</div>
+        <div class="one-right" @click="$router.push('/demo/particulars')">明细</div>
       </div>
     </div>
 
     <div class="base">
       <div class="base-top">
         <div class="top-left">配售商品：0</div>
-        <div class="top-right">明细</div>
+        <div class="top-right" @click="$router.push('/demo/particulars')">明细</div>
         <div class="top-right">一件转存</div>
       </div>
       <div class="base-two">
         <div class="two-left">可售商品：0</div>
-        <div class="two-rights">明细</div>
+        <div class="two-rights" @click="$router.push('/demo/particulars')">明细</div>
         <div class="two-right">委托销售</div>
       </div>
       <div class="base-one">
         <div class="one-left">转存商品：0</div>
-        <div class="one-right">明细</div>
+        <div class="one-right" @click="$router.push('/demo/particulars')">明细</div>
         <div class="one-rights">确认转存</div>
       </div>
     </div>

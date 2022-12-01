@@ -43,13 +43,13 @@ module.exports = {
     disableHostCheck: true,
     proxy: {
       '/api': {
-        target: 'http://121.40.224.41:58/',
+        target: 'http://ticket.zjsdd.cn',
         changeOrigin: true,
         ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        // pathRewrite: {
-        //   ['^' + process.env.VUE_APP_BASE_API]: ''
-        // }
+        pathRewrite: {
+          ['^' + 'http://ticket.zjsdd.cn']: ''
+        }
       }
     }
   }

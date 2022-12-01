@@ -34,7 +34,7 @@
     <!-- 实名认证 -->
     <van-cell title="实名认证" is-link @click="alterRealname">
       <template #default>
-        <div>{{realname}}</div>
+        <div>{{ realname }}</div>
       </template>
     </van-cell>
     <!-- 登录密码 -->
@@ -288,6 +288,7 @@
 
 <script>
 import { Toast } from "vant";
+import { removeToken } from "@/utils/auth";
 export default {
   data() {
     return {
@@ -306,17 +307,17 @@ export default {
       phoneCode: true,
       phoneCodes: false,
       time: 60 * 10 * 10 * 10,
-      realname:'',//实名认证
-      showRealname:false, //实名认证
-      textRealname:'',//真实姓名
-      textIdNumber:'',//身份证号
-      showpassword:false, //设置密码
-      textPassword:'',//密码
-      textPasswordCode:'',//验证码
-      textPasswordChange:'',//设置密码
-      textPasswordChanges:'',//确认密码
-      passwordCode:true,
-      passwordCodes:false
+      realname: "", //实名认证
+      showRealname: false, //实名认证
+      textRealname: "", //真实姓名
+      textIdNumber: "", //身份证号
+      showpassword: false, //设置密码
+      textPassword: "", //密码
+      textPasswordCode: "", //验证码
+      textPasswordChange: "", //设置密码
+      textPasswordChanges: "", //确认密码
+      passwordCode: true,
+      passwordCodes: false,
     };
   },
   created() {},
@@ -326,6 +327,7 @@ export default {
       this.$router.push("/my");
     },
     button() {
+      removeToken();
       this.$router.push("/login");
     },
 
@@ -349,13 +351,13 @@ export default {
         Toast("请填写昵称");
       } else {
         this.showName = false;
-        this.textName = ''
+        this.textName = "";
       }
     },
     // 关闭修改昵称弹框
     cancelName() {
       this.showName = false;
-      this.textName = ''
+      this.textName = "";
     },
 
     // 修改手机号弹框
@@ -389,47 +391,47 @@ export default {
     },
 
     // 实名认证弹框
-    alterRealname(){
-      this.showRealname = true
+    alterRealname() {
+      this.showRealname = true;
     },
     // 实名认证确定按钮
-    okRealname(){
-      this.realname = this.textRealname
-      if(this.textRealname == ''){
+    okRealname() {
+      this.realname = this.textRealname;
+      if (this.textRealname == "") {
         Toast("请填写真实姓名");
-      }else if (this.textIdNumber == ''){
+      } else if (this.textIdNumber == "") {
         Toast("请填写身份证号");
-      }else{
-        this.showRealname = false
+      } else {
+        this.showRealname = false;
       }
     },
     // 关闭修改实名认证弹框
-    cancelRealname(){
-      this.showRealname = false
+    cancelRealname() {
+      this.showRealname = false;
     },
 
     // 设置密码
-    alterPassword(){
-      this.showpassword = true
+    alterPassword() {
+      this.showpassword = true;
     },
     // 设置密码确认按钮
-    okPassword(){
-      if(this.textPasswordCode == ''){
+    okPassword() {
+      if (this.textPasswordCode == "") {
         Toast("请填写验证码");
-      }else if (this.textPasswordChange == ''){
+      } else if (this.textPasswordChange == "") {
         Toast("请填写新密码");
-      }else if (this.textPasswordChanges == ''){
+      } else if (this.textPasswordChanges == "") {
         Toast("请填写确认密码");
       }
     },
     // 设置密码取消按钮
-    cancelPassword(){
-      this,this.showpassword = false
+    cancelPassword() {
+      this, (this.showpassword = false);
     },
-    codePassword(){
-      this.passwordCode = false
-      this.passwordCodes = true
-    }
+    codePassword() {
+      this.passwordCode = false;
+      this.passwordCodes = true;
+    },
   },
 };
 </script>

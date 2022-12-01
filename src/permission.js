@@ -6,35 +6,31 @@ import { getInfo,parkInfo } from '@/api/user'
 import { cacheData } from '@/global'
 import { judgeObjectNull } from '@/utils'
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login/addLogin'] // no redirect whitelist
 NProgress.configure({
   showSpinner: false
 })
 
 router.beforeEach(async(to, from, next) => {
   // NProgress.start()
-  
   // set page title
-  document.title = to.meta.title||''
-
-
-  next()
-  // determine whether the user has logged in
   const hasToken = getToken()
-
-  // if (hasToken) {
-  //   if (to.path === '/login') {
-  //     next({ path: '/' })
-  //   } else {
-  //     next()
-  //   }
-  // } else {
-  //   if (whiteList.indexOf(to.path) !== -1) {
-  //     next()
-  //   } else {
-  //     next(`/login?redirect=${to.path}`)
-  //   }
-  // }
+  document.title = to.meta.title||''
+  if(to.path === '/login'){
+    if (hasToken) {
+      next({ path: '/' })
+    }else{
+      next()
+    }
+  }else if(whiteList.indexOf(to.path)==-1){
+    if (hasToken) {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
+  }else{
+    next()
+  }
 })
 
 router.afterEach(() => {

@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import Qs from 'qs'
 import { Toast } from 'vant'
+import { getToken } from '@/utils/auth'
 // import { getToken } from '@/utils/auth'
 import { getTimeMs } from '@/utils/time'
 
@@ -10,38 +11,18 @@ const http = Axios.create({
 	// api的base_url
   baseURL:'/api',
   timeout: 50000,
-  // transformRequest: [function(data) {
-  //   data = Qs.stringify(data)
-  //   return data
-  // }]
+  transformRequest: [function(data) {
+    data = Qs.stringify(data)
+    return data
+  }]
 })
 
 
 // 设置请求头
 http.interceptors.request.use(config => {
     // console.log(http);
-// if (localStorage.getItem('token') && config.url!='/api/1.0/HY/staffInParkList') {
-    if (localStorage.getItem('token')) {
-    config.headers['token'] = localStorage.getItem('token')
-  }
-
-// console.log(config.url);
-
-let urlArr=['/api/1.0/fkgl/visitorH5/order','/app/1.0/hy/player/info']
-
-  // 判断接口是否需要添加园区id
-  if(urlArr.indexOf(config.url)==-1){
-    config.headers['parkId'] = cacheData.user.parkId 
-  }
-
-
-  if(config.url=='/api/1.0/fkgl/visitorH5/order'){
-    config.headers['parkId'] = localStorage.getItem('fkyyParkId')
-  }
-
- 
-
-	config.headers['jonId'] = getTimeMs()
+    config.headers['Content-Type']='application/x-www-form-urlencoded;charset=utf-8'
+    if(getToken())config.headers['token']=getToken()
 	return config
 }, error => {
 	console.log(error)

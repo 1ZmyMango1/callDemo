@@ -85,9 +85,18 @@ export default {
       btnUp: false,
       onBind: true,
       upBind: false,
+      // 我擦 页面呢
     };
   },
+  created() {
+    console.log("567890-");
+    this.login()
+  },
   methods: {
+    async login() {
+      const res = await login();
+      console.log(res);
+    },
     onClickLeft() {
       this.$router.push("/login");
     },
@@ -151,7 +160,7 @@ export default {
       this.onBind = false;
       this.upBind = true;
     },
-    bindUp(){}
+    bindUp() {},
   },
 };
 </script>

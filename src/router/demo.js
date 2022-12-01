@@ -134,6 +134,14 @@ const appRoute = [
 		}
 	},
 	{
+		path:'/demo/details',
+		name:'details',
+		component:() => import('../views/demo/details/index.vue'),
+		meta:{
+			title:'商品详情',
+		}
+	},
+	{
 		path:'/my/order',
 		name:'order',
 		component:() => import('../views/my/order/index.vue'),
@@ -146,7 +154,7 @@ const appRoute = [
 		name:'okShopping',
 		component:() => import('../views/shopping/okShopping/index.vue'),
 		meta:{
-			title:'我的订单',
+			title:'确认订单',
 		}
 	},
 

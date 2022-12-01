@@ -56,10 +56,10 @@ import moment from 'moment'
 Vue.use(Vant)
 
 // 更改.env.development的VUE_APP_BASE_API为 mock即可mock数据
-import { mockXHR } from '../mock'
-if (process.env.VUE_APP_BASE_API === '/mock') {
-  mockXHR()
-}
+// import { mockXHR } from '../mock'
+// if (process.env.VUE_APP_BASE_API === '/mock') {
+//   mockXHR()
+// }
 
 Vue.prototype.momemt=moment
 

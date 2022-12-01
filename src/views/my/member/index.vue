@@ -25,7 +25,7 @@
             touchable
           >
             <van-swipe-item>
-              <img src="../../../assets/img/card_level1.png" alt="" />
+              <img src="../../../assets/img/Group 00.png" alt="" />
             </van-swipe-item>
             <van-swipe-item>
               <img src="../../../assets/img/card2_level.png" alt="" />

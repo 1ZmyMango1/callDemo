@@ -40,17 +40,18 @@ module.exports = {
       errors: true
     },
     // 配置跨域处理
-    // disableHostCheck: true,
-    // proxy: {
-    //   [process.env.VUE_APP_BASE_API]: {
-    //     target: 'http://open.gm9527.com',
-    //     changeOrigin: true,
-    //     ws: true,
-    //     pathRewrite: {
-    //       ['^' + process.env.VUE_APP_BASE_API]: ''
-    //     }
-    //   }
-    // }
+    disableHostCheck: true,
+    proxy: {
+      '/api': {
+        target: 'http://121.40.224.41:58/',
+        changeOrigin: true,
+        ws: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        // pathRewrite: {
+        //   ['^' + process.env.VUE_APP_BASE_API]: ''
+        // }
+      }
+    }
   }
 
   //   // 改变主题颜色

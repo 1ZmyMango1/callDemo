@@ -42,16 +42,16 @@
     <!-- 商品信息 -->
     <van-card>
       <template #thumb>
-        <img src="../../../assets/img/commodity.png" style="width:95px; height:95px;" alt="">
+        <img src="../../../assets/img/commodity.png" style="width:95px; height:95px;" alt="" @click="$router.push('/demo/details')">
       </template>
       <template #title>
-        <div class="title">商品标题</div>
+        <div class="title" @click="$router.push('/demo/details')">商品标题</div>
       </template>
       <template #price>
-        <div class="price">￥200</div>
+        <div class="price" @click="$router.push('/demo/details')">￥200</div>
       </template>
       <template #num>    
-        <div class="button"><span>去购买</span></div>
+        <div class="button" @click="$router.push('/shopping')"><span>去购买</span></div>
       </template>
     </van-card>
   </div>

@@ -17,6 +17,7 @@
 
 <script>
 import { Toast } from 'vant';
+import { addressList } from "@/api/user"
 export default {
   data() {
     return {
@@ -38,12 +39,19 @@ export default {
       ],
     };
   },
-  created() {},
+  created() {
+    this.addressList()
+  },
   mounted() {},
-  destoryed() {},
   methods: {
     onClickLeft() {
       this.$router.push("/my");
+    },
+
+    // 地址列表
+    async addressList(){
+      let res = await addressList()
+      console.log(res);
     },
 
     onAdd() {
@@ -55,8 +63,8 @@ export default {
         }
       )
     },
-    onEdit(item, index) {
-      Toast('编辑地址:' + index);
+    onEdit(item) {
+      Toast('编辑地址');
       this.$router.push(
         {
           path:"/my/addAddress",

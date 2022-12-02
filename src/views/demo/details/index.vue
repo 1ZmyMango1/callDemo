@@ -1,6 +1,6 @@
 <template>
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
-    <van-nav-bar title="消息中心" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar title="商品详情" left-arrow @click-left="onClickLeft" />
     <div class="box-img">
       <img src="../../../assets/img/Rectangle.png" alt="" />
     </div>
@@ -126,7 +126,7 @@
 
       <div class="num">
         <div class="num-one">购买数量</div>
-        <div class="num-two"><van-stepper @plus="add()" @minus="del()" v-model="value" input-width="30px" button-size="25px"/></div>
+        <div class="num-two"><van-stepper min="6" @plus="add()" @minus="del()" v-model="value" input-width="30px" button-size="25px"/></div>
       </div>
 
       <div class="confirm" @click="confirm">确定</div>
@@ -167,11 +167,11 @@ export default {
 
     // 增加
     add(){
-      this.value = this.value * 2
+      this.value = this.value + 6
     },
     // 减少
     del(){
-      this.value = this.value * 2
+      this.value = this.value - 6
     },
 
     confirm(){

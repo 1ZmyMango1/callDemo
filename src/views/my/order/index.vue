@@ -239,16 +239,30 @@
 </template>
 
 <script>
+import { orderList } from "@/api/user"
 export default {
   data() {
     return {
       active: 0,
     };
   },
+  created(){
+    this.orderList()
+  },
   methods: {
     onClickLeft() {
       this.$router.push("/my");
     },
+
+    async orderList(){
+      let data = {
+        status:2,
+        pageNum:1,
+        pageSize:10
+      }
+      let res = await orderList(data)
+      console.log(res);
+    }
   },
 };
 </script>

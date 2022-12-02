@@ -36,17 +36,14 @@
               <div>呼和酒票</div>
             </div>
 
-            <div class="con-def">
-              默认
-            </div>
+            <div class="con-def">默认</div>
 
-            <div class="con-price">
-              ￥206.00
-            </div>
+            <div class="con-price">￥206.00</div>
 
             <div class="stepAdd fr">
               <!-- <van-stepper v-model="item.num" @plus='add(index)' @minus='del(index)' async-change @change="onChange($event,index)" theme="round" button-size="22" disable-input /> -->
               <van-stepper
+                min="6"
                 v-model="item.num"
                 @plus="add(index)"
                 @minus="del(index)"
@@ -103,7 +100,7 @@ export default {
         {
           id: "0",
           name: "这是一件商品1",
-          num: 1,
+          num: 6,
           price: "206",
           isSelected: true,
         },
@@ -161,12 +158,14 @@ export default {
     //   增加
     add(index) {
       if (this.shopList[index].isSelected) {
+        this.shopList[index].num = this.shopList[index].num + 5;
         this.allPrice += Number(this.shopList[index].price);
       }
     },
     //   减少
     del(index) {
       if (this.shopList[index].isSelected) {
+        this.shopList[index].num = this.shopList[index].num - 5;
         this.allPrice -= Number(this.shopList[index].price);
       }
     },
@@ -190,14 +189,14 @@ export default {
     },
 
     // 去结算按钮
-    okShopping(){
-      this.$router.push('/my/okShopping')
+    okShopping() {
+      this.$router.push("/my/okShopping");
       // if(this.allPrice >= 0){
       //   Toast('请选择商品');
       // }else if(this.allPrice <= 0){
       //   this.$router.push('/my/okShopping')
       // }
-    }
+    },
   },
 };
 </script>
@@ -335,7 +334,7 @@ export default {
   font-size: 14px;
   color: #999;
   padding-left: 160px;
-  margin:12px 0;
+  margin: 12px 0;
 }
 .con-price {
   font-size: 16px;

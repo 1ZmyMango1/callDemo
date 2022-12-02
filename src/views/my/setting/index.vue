@@ -4,11 +4,7 @@
 
     <!-- 头像 -->
     <div class="box-img">
-      <img
-        style="width: 80px; height: 80px"
-        src="../../../assets/img/head.png"
-        alt=""
-      />
+      <img style="width: 80px; height: 80px" :src="img" alt="" />
     </div>
 
     <!-- 信息 -->
@@ -117,7 +113,7 @@
           <div class="phone-name">更换手机号</div>
           <div class="phone-input">
             <van-cell-group>
-              <van-field v-model="textPhone">
+              <van-field v-model="textPhone" disabled>
                 <template #label>
                   <div style="font-size: 16px">+86</div>
                 </template>
@@ -133,7 +129,7 @@
                     <img src="../../../assets/img/button_get.png" alt="" />
                   </div>
                   <div v-if="phoneCodes">
-                    <van-count-down auto-start :time="time">
+                    <van-count-down auto-start :time="time" @finish="finish">
                       <template #default="timeData">
                         <span class="block">{{ timeData.seconds }} s</span>
                       </template>
@@ -220,7 +216,7 @@
           <div class="password-name">设置密码</div>
           <div class="password-input">
             <van-cell-group>
-              <van-field v-model="textPassword">
+              <van-field v-model="textPassword" disabled>
                 <template #label>
                   <div style="font-size: 16px">+86</div>
                 </template>
@@ -288,10 +284,19 @@
 
 <script>
 import { Toast } from "vant";
-import { removeToken } from "@/utils/auth";
+import { removeToken, getToken } from "@/utils/auth";
+import {
+  userlLogin,
+  securityCode,
+  editUser,
+  replacePhone,
+  realNameCertification,
+  setPassword
+} from "@/api/user";
 export default {
   data() {
     return {
+      img: "", //头像
       sex: "", //性别
       showPicker: "", //性别弹框
       showPicker: false, //性别的弹层
@@ -320,19 +325,46 @@ export default {
       passwordCodes: false,
     };
   },
-  created() {},
+  created() {
+    this.userlLogin();
+  },
   mounted() {},
   methods: {
+    // 个人信息
+    async userlLogin() {
+      let res = await userlLogin();
+      getToken();
+      // console.log(res);
+      this.phone = res.data.phone; //手机号
+      this.name = res.data.nickname; //用户名称
+      if (res.data.sex == 1) {
+        this.sex = "男";
+      } else {
+        this.sex = "女";
+      }
+      if ((res.data.is_real = 0)) {
+        this.realname = "未实名";
+      } else {
+        this.realname = "已实名";
+      }
+      this.img = res.data.head_pic;
+      this.textPhone = res.data.phone;
+      this.textPassword = res.data.phone;
+    },
+
     onClickLeft() {
       this.$router.push("/my");
     },
     button() {
       removeToken();
       this.$router.push("/login");
+      Toast("退出成功");
     },
 
-    onConfirm(value) {
+    // 性别
+    async onConfirm(value) {
       console.log(value);
+      let res = await editUser(this.sex);
       this.sex = value;
       this.showPicker = false;
     },
@@ -345,8 +377,10 @@ export default {
       this.showName = true;
     },
     // 修改昵称确定按钮
-    okName() {
+    async okName() {
       this.name = this.textName;
+      let res = await editUser(this.name);
+      // console.log(res);
       if (this.name == "") {
         Toast("请填写昵称");
       } else {
@@ -361,11 +395,18 @@ export default {
     },
 
     // 修改手机号弹框
-    alterPhone() {
+    async alterPhone() {
       this.showphone = true;
     },
     // 修改手机号确定按钮
-    okPhone() {
+    async okPhone() {
+      let params = {
+        phone: this.phone,
+        new_phone: this.textPhoneChange,
+        captcha: this.textCode,
+      };
+      let res = await replacePhone(params);
+      console.log(res);
       this.phone = this.textPhoneChange;
       if (this.textCode == "") {
         Toast("请填写验证码");
@@ -374,7 +415,7 @@ export default {
       } else {
         this.showphone = false;
         this.textPhoneChange = "";
-        this.textPhone = "";
+        // this.textPhone = "";
         this.textCode = "";
       }
     },
@@ -382,12 +423,26 @@ export default {
     cancelPhone() {
       this.showphone = false;
       this.textPhoneChange = "";
-      this.textPhone = "";
+      // this.textPhone = "";
       this.textCode = "";
     },
-    codePhone() {
+    async codePhone() {
       this.phoneCode = false;
       this.phoneCodes = true;
+      try {
+        let params = {
+          phone: this.phone,
+        };
+        let codes = await securityCode(params);
+        if (codes.code != 0) {
+          Toast("验证码发送失败");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    finish() {
+      this.phoneCode = true;
     },
 
     // 实名认证弹框
@@ -395,7 +450,13 @@ export default {
       this.showRealname = true;
     },
     // 实名认证确定按钮
-    okRealname() {
+    async okRealname() {
+      let data = {
+        real_name: this.textRealname,
+        id_card: this.textIdNumber,
+      };
+      let res = await realNameCertification(data);
+      // console.log(res);
       this.realname = this.textRealname;
       if (this.textRealname == "") {
         Toast("请填写真实姓名");
@@ -403,11 +464,15 @@ export default {
         Toast("请填写身份证号");
       } else {
         this.showRealname = false;
+        this.textRealname = "";
+        this.textIdNumber = "";
       }
     },
     // 关闭修改实名认证弹框
     cancelRealname() {
       this.showRealname = false;
+      this.textRealname = "";
+      this.textIdNumber = "";
     },
 
     // 设置密码
@@ -415,22 +480,49 @@ export default {
       this.showpassword = true;
     },
     // 设置密码确认按钮
-    okPassword() {
+   async okPassword() {
+      let data = {
+        pwd_type:0,
+        password:this.textPasswordChanges,
+        captcha:this.textPasswordCode
+      }
+      let res = await setPassword(data)
       if (this.textPasswordCode == "") {
         Toast("请填写验证码");
       } else if (this.textPasswordChange == "") {
         Toast("请填写新密码");
       } else if (this.textPasswordChanges == "") {
         Toast("请填写确认密码");
+      }else if(this.textPasswordChanges === this.textPasswordChange){
+        Toast("两次密码不一致");
       }
+
+      this.showpassword = false;
+      this.textPasswordCode = ''
+      this.textPasswordChange = ''
+      this.textPasswordChanges = ''
     },
     // 设置密码取消按钮
     cancelPassword() {
-      this, (this.showpassword = false);
+      this.showpassword = false;
+      this.textPasswordCode = ''
+      this.textPasswordChange = ''
+      this.textPasswordChanges = ''
     },
-    codePassword() {
+   async codePassword() {
       this.passwordCode = false;
       this.passwordCodes = true;
+      try {
+        let data = {
+          phone:this.textPassword
+        }
+        let res = await securityCode(data)
+        if(res.code != 0){
+          Toast('验证码发送失败')
+        }
+      } catch (error) {
+        console.log(error);
+      } 
     },
   },
 };

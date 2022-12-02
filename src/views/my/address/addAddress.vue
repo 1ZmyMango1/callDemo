@@ -12,7 +12,6 @@
       />
       <van-field
         v-model="password"
-        type="password"
         name="手机号"
         label="手机号"
         placeholder="收货人手机号"
@@ -28,6 +27,7 @@
       />
 
       <van-field
+        type="textarea"
         v-model="text"
         label="详细地址"
         placeholder="小区，街道，门牌号等"
@@ -35,46 +35,66 @@
       />
 
       <div style="margin: 100px">
-        <van-button round block type="info" native-type="submit"
+        <van-button
+          round
+          block
+          type="info"
+          native-type="submit"
+          @click="upSubmit"
           >保存</van-button
         >
       </div>
     </van-form>
 
-  <Address ref="addr" @save='addSave'></Address>
-    
+    <div class="delBtn" @click="delBtn">删除</div>
+
+    <Address ref="addr" @save="addSave"></Address>
   </div>
 </template>
 
 <script>
-import Address from '../../components/address.vue'
+import Address from "../../components/address.vue";
+import { addUserAddress , delAddress } from "@/api/user";
 export default {
-  components:{
-    Address
+  components: {
+    Address,
   },
   data() {
     return {
-      titel: "",
+      title: "",
       username: "",
       password: "",
-      addressVal:'',
+      addressVal: "",
       text: "",
+      value: [],
+      idAddress:'',
     };
   },
   created() {
     this.title = this.$route.query.name;
+
+    this.value = this.$route.query.item;
+    // console.log(this.value);
+    this.username = this.value.name;
+    this.password = this.value.tel;
+    this.text = this.value.address;
+    this.idAddress = this.value.id;
     console.log(this.$route.query.item);
   },
   mounted() {},
   computed: {},
   methods: {
-    addSave(val){
-      console.log("选中的地区",val);
-      this.addressVal = val.filter((item) => !! item).map((item) => item.name).join('/')
+    // 地区
+    addSave(val) {
+      console.log("选中的地区", val);
+      this.addressVal = val
+        .filter((item) => !!item)
+        .map((item) => item.name)
+        .join("/");
     },
-    show(){
+    show() {
       // console.log(this.$refs['addr']);
-      this.$refs['addr'].show = true
+      this.$refs["addr"].show = true;
     },
     onClickLeft() {
       this.$router.push("/my/address");
@@ -83,6 +103,34 @@ export default {
     onSubmit(values) {
       console.log("submit", values);
     },
+
+    // 保存/新增地址
+    async upSubmit() {
+      let data = {
+        receiver: this.username,
+        phone: this.password,
+        area_id: this.addressVal,
+        address: this.text,
+      };
+      let res = await addUserAddress(data);
+    },
+
+    // 删除
+    async delBtn(){
+      if(this.idAddress > 0){
+        let data = {
+          id:this.idAddress
+        }
+        let res = await delAddress(data)
+        this.$router.push('/address')
+      }else {
+        this.username = ''
+        this.password = ''
+        this.text = ''
+        this.addressVal = ''
+      }
+      
+    }
   },
 };
 </script>
@@ -117,5 +165,18 @@ export default {
   z-index: 9;
   height: 100vh;
   background-color: #fff;
+}
+
+.delBtn {
+  width: 340px;
+  height: 42px;
+  color: #f55e68;
+  border: 1px solid #f55e68;
+  font-size: 14px;
+  margin-left: 16px;
+  background-color: #fff;
+  border-radius: 10px;
+  line-height: 42px;
+  text-align: center;
 }
 </style>

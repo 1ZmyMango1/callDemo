@@ -30,7 +30,7 @@
           <template #button>
             <div class="button" v-if="code" @click="onCode">获取验证码</div>
             <div v-else>
-              <van-count-down auto-start :time="time">
+              <van-count-down auto-start :time="time" @finish="finish">
                 <template #default="timeData">
                   <span class="block">{{ timeData.seconds }} s</span>
                 </template>
@@ -66,14 +66,14 @@
 
 <script>
 import { isEmpty, isPhone, isSixNumberCode } from "@/utils/validate";
-import { login } from "@/api/user";
+import { login, securityCode } from "@/api/user";
 import { setToken } from "@/utils/auth";
 import { Toast } from "vant";
 export default {
   data() {
     return {
-      account: "17729944656",
-      passWord: "123456",
+      account: "",
+      passWord: "",
       accountErr: "",
       passWordErr: "",
       loading: true,
@@ -84,21 +84,33 @@ export default {
       isSelFlag: false,
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     onClickLeft() {
       this.$router.push("/login");
     },
 
     // 获取验证码
-    onCode() {
-      this.code = false;
-      if (this.time == "00 * 00 * 00 * 00") {
-        this.code = true;
+    async onCode() {
+      try {
+        this.code = false;
+        const params = {
+          phone:this.account
+        }
+        let codes = await securityCode(params)
+        if (codes.code != 0) {
+          // 这边提示错误消息
+          Toast("验证码发送失败");
+        }
+        // 正确的code是多少 就执行正确的操作
+      } catch (error) {
+        console.log(error);
       }
     },
-
+    // 倒计时结束 获取验证码按钮解开
+    finish(){
+      this.code = true
+    },
     // 绑定按钮
     async onBtn() {
       if (!this.isSelFlag) {
@@ -132,7 +144,7 @@ export default {
 
       let data = {
         phone: this.account,
-        password: this.passWord,
+        captcha: this.passWord,
       };
 
       let res = await login(data);

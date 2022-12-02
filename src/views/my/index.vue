@@ -7,10 +7,10 @@
       </div>
 
       <div class="box-img">
-        <div><img src="../../assets/img/head.png" alt="" /></div>
+        <div><img :src="img" alt="" /></div>
         <div class="box-user-info">
-          <div class="user-info">房东的猫</div>
-          <div class="user-info-id">会员ID：265881155</div>
+          <div class="user-info">{{nickname}}</div>
+          <div class="user-info-id">会员ID：{{id}}</div>
         </div>
       </div>
 
@@ -35,15 +35,15 @@
         <div class="property-title">我的资产</div>
         <div class="property-concent">
           <div class="property-one">
-            <span>0.00</span>
+            <span>{{balance}}</span>
             <div class="property-text">余额</div>
           </div>
           <div class="property-one">
-            <span>0.00</span>
+            <span>{{commodity}}</span>
             <div class="property-text">商品1</div>
           </div>
           <div class="property-one">
-            <span>0.00</span>
+            <span>{{commodityS}}</span>
             <div class="property-text">商品2</div>
           </div>
         </div>
@@ -100,11 +100,32 @@
 </template>
 
 <script>
+import { userlLogin } from "@/api/user";
 export default {
   data() {
-    return {};
+    return {
+      nickname:'',//昵称
+      id:'',//会员id
+      balance:'',//余额
+      commodity:'',//商品1
+      commodityS:'',//商品2
+      img:'', //头像
+    };
+  },
+  created(){
+    this.userlLogin()
   },
   methods: {
+    async userlLogin(){
+      let res = await userlLogin()
+      console.log(res);
+      this.balance = res.data.wallet
+      this.commodity = res.data.son_ticket_num
+      this.commodityS = res.data.ticket_num
+      this.nickname = res.data.nickname
+      this.id = res.data.id
+      this.img = res.data.head_pic;
+    }
   },
 };
 </script>
@@ -220,6 +241,7 @@ export default {
     justify-content: space-around;
     margin-top: 15px;
     .property-one {
+      text-align: center;
       span {
         font-size: 20px;
       }

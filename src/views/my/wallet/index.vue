@@ -5,13 +5,13 @@
     <div class="box-img">
       <img src="../../../assets/img/card_bg.png" alt="" />
       <div class="box-sum">
-        <div class="box-sum-one">0.00</div>
+        <div class="box-sum-one">{{balance}}</div>
         <div class="box-sum-two">总资产（元）</div>
       </div>
 
       <div class="add-up">
-        <span>累计充值：1000元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;累计消费：1999元</span>
+        <span>累计充值：{{numUp}}元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;累计消费：{{numExpend}}元</span>
       </div>
     </div>
 
@@ -38,17 +38,31 @@
 </template>
 
 <script>
+import { userWallet } from "@/api/user"
 export default {
   data() {
-    return {};
+    return {
+      balance:'',
+      numUp:'',
+      numExpend:''
+    };
   },
-  created() {},
+  created() {
+    this.userWallet()
+  },
   mounted() {},
-  destoryed() {},
   methods: {
     onClickLeft() {
       this.$router.push("/my");
     },
+
+    async userWallet(){
+      let res = await userWallet()
+      console.log(res);
+      this.balance = res.data.wallet
+      this.numUp = res.data.total_recharge
+      this.numExpend = res.data.total_pay
+    }
   },
 };
 </script>

@@ -165,7 +165,14 @@ const appRoute = [
 			title:'确认订单',
 		}
 	},
-
+	{
+		path:'/demo/examine',
+		name:'examine',
+		component:() => import('../views/demo/examine/index.vue'),
+		meta:{
+			title:'查看详情',
+		}
+	},
 ]
 
 export default appRoute

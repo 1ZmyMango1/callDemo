@@ -45,7 +45,7 @@ import http from '@/utils/request'
 // 登录
 export function login(data){
   return http ({
-    url:'/api/Login/login',
+    url:'/Login/login',
     method:'POST',
     data:data
   })

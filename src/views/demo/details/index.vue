@@ -21,7 +21,7 @@
       <div class="scope-price">￥206</div>
     </div>
 
-    <div class="call">查看详情</div>
+    <div class="call" @click="$router.push('/demo/examine')">查看详情</div>
 
     <div class="information">数据统计</div>
 
@@ -48,44 +48,139 @@
       </div>
       <div class="buttom-two">
         <div class="two-left">折扣卷：0</div>
-        <div class="two-rights" @click="$router.push('/demo/particulars')">明细</div>
+        <div class="two-rights" @click="$router.push('/demo/particulars')">
+          明细
+        </div>
         <div class="two-right">自主认购</div>
       </div>
       <div class="buttom-one">
         <div class="one-left">折扣商品：0</div>
-        <div class="one-right" @click="$router.push('/demo/particulars')">明细</div>
+        <div class="one-right" @click="$router.push('/demo/particulars')">
+          明细
+        </div>
       </div>
     </div>
 
     <div class="base">
       <div class="base-top">
         <div class="top-left">配售商品：0</div>
-        <div class="top-right" @click="$router.push('/demo/particulars')">明细</div>
+        <div class="top-right" @click="$router.push('/demo/particulars')">
+          明细
+        </div>
         <div class="top-right">一件转存</div>
       </div>
       <div class="base-two">
         <div class="two-left">可售商品：0</div>
-        <div class="two-rights" @click="$router.push('/demo/particulars')">明细</div>
+        <div class="two-rights" @click="$router.push('/demo/particulars')">
+          明细
+        </div>
         <div class="two-right">委托销售</div>
       </div>
       <div class="base-one">
         <div class="one-left">转存商品：0</div>
-        <div class="one-right" @click="$router.push('/demo/particulars')">明细</div>
+        <div class="one-right" @click="$router.push('/demo/particulars')">
+          明细
+        </div>
         <div class="one-rights">确认转存</div>
       </div>
     </div>
+
+    <div class="footer">
+      <div class="footer-love" @click="showLove">
+        <div>
+          <img
+            src="../../../assets/img/Frame.png"
+            alt=""
+            v-if="isShowLove"
+          /><img src="../../../assets/img/Vector.png" alt="" v-else />
+        </div>
+        <span>收藏</span>
+      </div>
+      <div class="footer-shp" @click="$router.push('/shopping')">
+        <div><img src="../../../assets/img/购物车.png" alt="" /></div>
+        <span>购物车</span>
+      </div>
+      <div class="shopping" @click="$router.push('/shopping')">购物车</div>
+      <div class="okGo" @click="purchase">立即购买</div>
+    </div>
+
+    <van-popup
+      v-model="isShowGo"
+      round
+      position="bottom"
+      :style="{ height: '30%' }"
+    >
+      <div class="show">
+        <div class="show-img">
+          <img src="../../../assets/img/Rectangle.png" alt="" />
+        </div>
+        <div class="pays">
+          <div class="pay">￥{{allPrice}}</div>
+          <div class="repertory">库存：15789523件</div>
+          <div class="select">已选择：默认{{value}}件</div>
+        </div>
+      </div>
+
+      <div class="commodity">商品型号</div>
+      <div class="default">默认</div>
+
+      <div class="num">
+        <div class="num-one">购买数量</div>
+        <div class="num-two"><van-stepper @plus="add()" @minus="del()" v-model="value" input-width="30px" button-size="25px"/></div>
+      </div>
+
+      <div class="confirm" @click="confirm">确定</div>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import { Toast } from 'vant';
 export default {
   data() {
-    return {};
+    return {
+      isShowLove: false,
+      isShowGo: false,
+      value:6,
+      allPrice:206,
+      shopList: [
+        {
+          id: "0",
+          name: "这是一件商品1",
+          num: 1,
+          price: "206",
+          isSelected: true,
+        },
+      ],
+    };
   },
   methods: {
     onClickLeft() {
       this.$router.push("/demo/demo1");
     },
+    showLove() {
+      this.isShowLove = !this.isShowLove;
+    },
+    purchase() {
+      this.isShowGo = true;
+    },
+
+    // 增加
+    add(){
+      this.value = this.value * 2
+    },
+    // 减少
+    del(){
+      this.value = this.value * 2
+    },
+
+    confirm(){
+      if(this.value > 5){
+        this.$router.push('/my/okShopping')
+      }else {
+        Toast('购买数量默认是 6 哦');
+      }
+    }
   },
 };
 </script>
@@ -318,6 +413,8 @@ export default {
   background-color: #fff;
   border-radius: 10px;
   margin: 15px 16px;
+  padding-bottom: 100px;
+  // margin-bottom: 100px;
   .base-top {
     display: flex;
     justify-items: center;
@@ -374,10 +471,10 @@ export default {
     .one-rights {
       height: 28px;
       width: 95px;
-        background-color: #f55e68;
-        color: #fff;
-    //   border: 1px solid #f55e68;
-    //   color: #f55e68;
+      background-color: #f55e68;
+      color: #fff;
+      //   border: 1px solid #f55e68;
+      //   color: #f55e68;
       text-align: center;
       line-height: 28px;
       border-radius: 20px;
@@ -414,9 +511,9 @@ export default {
     .two-right {
       height: 28px;
       width: 95px;
-    //   background-color: #f55e68;
-    //   color: #fff;
-    color: #f55e68;
+      //   background-color: #f55e68;
+      //   color: #fff;
+      color: #f55e68;
       border: 1px solid #f55e68;
       text-align: center;
       line-height: 28px;
@@ -425,5 +522,121 @@ export default {
       margin-top: 10px;
     }
   }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  display: flex;
+  justify-items: center;
+  justify-content: space-evenly;
+  .footer-love {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .footer-shp {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .shopping {
+    width: 95px;
+    height: 28px;
+    color: #f55e68;
+    border: 1px solid #f55e68;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+  .okGo {
+    width: 95px;
+    height: 28px;
+    background-color: #f55e68;
+    // border: 1px solid #f55e68;
+    color: #fff;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+}
+
+.show {
+  display: flex;
+  justify-items: center;
+  margin-top: 5px;
+  margin-left: 15px;
+  margin-right: 15px;
+  .show-img {
+    width: 89px;
+    height: 89px;
+    img {
+      width: 89px;
+      height: 89px;
+    }
+  }
+  .pays {
+    margin: 5px 20px;
+    .pay {
+      color: #f55e68;
+      font-size: 20px;
+    }
+    .repertory {
+      margin-top: 15px;
+    }
+    .select {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+  }
+}
+
+.commodity {
+  font-size: 16px;
+  font-weight: 700;
+  margin-left: 15px;
+  margin-top: 5px;
+}
+.default {
+  width: 69px;
+  height: 32px;
+  border-radius: 20px;
+  color: #f55e68;
+  background-color: #ffd2d7;
+  line-height: 32px;
+  text-align: center;
+  font-size: 15px;
+  margin-left: 15px;
+  margin-top: 5px;
+}
+
+.num {
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  .num-one {
+    margin-left: 15px;
+    font-size: 15px;
+    margin-top: 5px;
+  }
+  .num-two {
+    margin-right: 15px;
+  }
+}
+
+.confirm {
+  width:343px;
+  height: 40px;
+  background-color: #f55e68;
+  color: #fff;
+  border-radius: 20px;
+  line-height: 40px;
+  text-align: center;
+  margin-left: 15px;
+  margin-top: 7px;
 }
 </style>

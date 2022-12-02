@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       account: "17729944656",
-      passWord: "123123",
+      passWord: "123456",
       accountErr: "",
       passWordErr: "",
       loading: true,
@@ -85,13 +85,8 @@ export default {
     };
   },
   created() {
-    // this.login();
   },
   methods: {
-    // async login() {
-    //   const res = await login({});
-    //   console.log(res);
-    // },
     onClickLeft() {
       this.$router.push("/login");
     },
@@ -99,7 +94,6 @@ export default {
     // 获取验证码
     onCode() {
       this.code = false;
-      // this.times = true;
       if (this.time == "00 * 00 * 00 * 00") {
         this.code = true;
       }

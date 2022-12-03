@@ -3,13 +3,13 @@
     <van-nav-bar title="消息中心" left-arrow @click-left="onClickLeft" />
 
     <van-cell-group>
-      <van-cell title="单元格" label="描述信息" >
+      <van-cell title="单元格" label="无信息" >
         <template #icon>
             <img style="width:40px; height:40px; margin-right:15px; margin-top:6px" src="../../../assets/img/head_notice.png" alt="">
         </template>
       </van-cell>
 
-      <van-cell title="收益通知" label="描述信息" >
+      <van-cell title="收益通知" label="无信息" >
         <template #icon>
             <img style="width:40px; height:40px; margin-right:15px; margin-top:6px" src="../../../assets/img/head_notice.png" alt="">
         </template>

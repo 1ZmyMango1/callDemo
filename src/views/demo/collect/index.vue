@@ -3,35 +3,43 @@
     <van-nav-bar title="我的收藏" left-arrow @click-left="onClickLeft" />
 
     <!-- 商品信息 -->
-    <van-card>
+    <van-card v-for="item in merchandise" :key="item.id">
       <template #thumb>
-        <img
-          src="../../../assets/img/commodity.png"
-          style="width: 95px; height: 95px"
-          alt=""
-        />
+        <img :src="item.goods_image" style="width: 95px; height: 95px" alt="" />
       </template>
       <template #title>
-        <div class="title">商品标题</div>
+        <div class="title">{{ item.goods_name }}</div>
       </template>
       <template #price>
-        <div class="price">￥200</div>
+        <div class="price">￥{{ item.goods_price }}</div>
       </template>
       <template #num>
-        <div class="button"><span>去购买</span></div>
+        <div class="button" @click="$router.push('/shopping')"><span>去购买</span></div>
       </template>
     </van-card>
   </div>
 </template>
 
 <script>
+import { goodsList } from "@/api/user";
 export default {
   data() {
-    return {};
+    return {
+      merchandise: [],
+    };
+  },
+  created() {
+    this.goodsList();
   },
   methods: {
     onClickLeft() {
       this.$router.push("/demo/demo1");
+    },
+
+    async goodsList() {
+      let res = await goodsList();
+      console.log(res);
+      this.merchandise = res.data
     },
   },
 };
@@ -64,24 +72,24 @@ export default {
 
 .price {
   font-size: 20px;
-  color: #F55E68;
+  color: #f55e68;
   margin-top: 25px;
   margin-left: 10px;
 }
 
 .button {
-    background-color:#F55E68;
+  background-color: #f55e68;
+  height: 30px;
+  width: 100px;
+  border-radius: 50px;
+  color: #fff;
+  margin-top: 18px;
+  text-align: center;
+  span {
     height: 30px;
+    line-height: 30px;
     width: 100px;
-    border-radius: 50px;
-    color: #fff;
-    margin-top: 18px;
     text-align: center;
-    span {
-      height: 30px;
-      line-height: 30px;
-      width: 100px;
-      text-align: center;
-    }
+  }
 }
 </style>

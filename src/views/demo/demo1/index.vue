@@ -40,15 +40,15 @@
     <div class="navber">明星产品</div>
 
     <!-- 商品信息 -->
-    <van-card>
+    <van-card v-for="item in commodity" :key="item.id">
       <template #thumb>
-        <img src="../../../assets/img/commodity.png" style="width:95px; height:95px;" alt="" @click="$router.push('/demo/details')">
+        <img :src="item.goods_image" style="width:95px; height:95px;" alt="" @click="$router.push('/demo/details')">
       </template>
       <template #title>
-        <div class="title" @click="$router.push('/demo/details')">商品标题</div>
+        <div class="title" @click="$router.push('/demo/details')">{{item.goods_name}}</div>
       </template>
       <template #price>
-        <div class="price" @click="$router.push('/demo/details')">￥200</div>
+        <div class="price" @click="$router.push('/demo/details')">￥{{item.goods_price}}</div>
       </template>
       <template #num>    
         <div class="button" @click="$router.push('/shopping')"><span>去购买</span></div>
@@ -62,6 +62,8 @@ const member = require("../../../assets/img/member.png");
 const my = require("../../../assets/img/my.png");
 const shopping = require("../../../assets/img/shopping.png");
 const help = require("../../../assets/img/help.png");
+
+import { goodsList } from "@/api/user"
 export default {
   name: "Demo1",
   components: {},
@@ -76,12 +78,21 @@ export default {
       my: my,
       shopping: shopping,
       help: help,
+      commodity:[]
     };
   },
-  created() {},
+  created() {
+    this.goodsList()
+  },
   mounted() {},
-  destoryed() {},
-  methods: {},
+  methods: {
+    // 商品信息
+    async goodsList(){
+      let res = await goodsList()
+      console.log(res);
+      this.commodity = res.data
+    }
+  },
 };
 </script>
 

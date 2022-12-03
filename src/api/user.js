@@ -153,3 +153,12 @@ export function delAddress(params){
     params
   })
 }
+
+// 商品信息
+export function goodsList(data){
+  return http({
+    url:'/Goods/goodsList',
+    method:'POST',
+    data
+  })
+}

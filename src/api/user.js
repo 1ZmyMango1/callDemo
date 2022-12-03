@@ -180,3 +180,48 @@ export function goodsDetail(params){
     params
   })
 }
+
+// 商品下单页详情
+export function goodsOrderDetail(params){
+  return http({
+    url:'/Goods/goodsOrderDetail',
+    method:'GET',
+    params
+  })
+}
+
+// 添加商品到购物车
+export function addCart(data){
+  return http({
+    url:'/Cart/addCart',
+    method:'POST',
+    data
+  })
+}
+
+// 获取购物车数据
+export function getCart(params){
+  return http({
+    url:'/Cart/getCart',
+    method:'GET',
+    params
+  })
+}
+
+// 更改购物车商品数量
+export function editNum(data){
+  return http({
+    url:'/Cart/editNum',
+    method:'POST',
+    data
+  })
+}
+
+// 清空购物车
+export function clearCart(params){
+  return http({
+    url:'/Cart/clearCart',
+    method:'GET',
+    params
+  })
+}

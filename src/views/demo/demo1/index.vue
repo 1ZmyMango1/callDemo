@@ -51,7 +51,7 @@
         <div class="price" @click="goDetail(item.id)">￥{{item.goods_price}}</div>
       </template>
       <template #num>    
-        <div class="button" @click="$router.push('/shopping')"><span>去购买</span></div>
+        <div class="button" @click="goShopping(item.id)"><span>去购买</span></div>
       </template>
     </van-card>
   </div>
@@ -63,7 +63,7 @@ const my = require("../../../assets/img/my.png");
 const shopping = require("../../../assets/img/shopping.png");
 const help = require("../../../assets/img/help.png");
 
-import { goodsList } from "@/api/user"
+import { goodsList , addCart } from "@/api/user"
 export default {
   name: "Demo1",
   components: {},
@@ -100,6 +100,16 @@ export default {
         path:'/demo/details',
         query:{id}
       })
+    },
+
+    // 添加商品到购物车
+    async goShopping(id){
+      let data = {
+        goods_id:id,
+        goods_num:6,
+      }
+      let res = await addCart(data)
+      this.$router.push('/shopping')
     }
   },
 };
@@ -120,10 +130,10 @@ export default {
   background-color: #fff;
 }
 .search {
-  margin-top: 20px;
+  // margin-top: 20px;
 }
 .hint {
-  margin: 24px 17px;
+  margin: 10px 17px;
   overflow: hidden;
   display: flex;
   justify-items: center;
@@ -149,7 +159,7 @@ export default {
 .navber {
   font-size: 20px;
   margin-left: 17px;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
 }
 
 .title {

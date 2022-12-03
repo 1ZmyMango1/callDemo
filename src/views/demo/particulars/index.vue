@@ -26,12 +26,22 @@
 export default {
   data() {
     return {
-      active:0
+      active:0,
+      idParticulars:''
     };
+  },
+  created(){
+    this.idParticulars = this.$route.query.id
+    console.log(this.idParticulars,'11111111');
   },
   methods: {
     onClickLeft(){
-      this.$router.push('/demo/details')
+      this.$router.push({
+        path:'/demo/details',
+        query:{
+          idParticulars:this.idParticulars
+        }
+      })
     }
   },
 };

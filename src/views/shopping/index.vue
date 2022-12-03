@@ -17,7 +17,7 @@
             <div class="checkBox fl">
               <van-checkbox
                 checked-color="#F55E68"
-                v-model="item.isSelected"
+                v-model="isSelected"
                 @change="btnHandel($event, index)"
               ></van-checkbox>
             </div>
@@ -25,7 +25,7 @@
               <!-- <span>{{ item.name }}</span> -->
               <div>
                 <img
-                  src="../../assets/img/commodity.png"
+                  :src="item.goods_image"
                   alt=""
                   style="width: 106px; height: 106px"
                 />
@@ -33,18 +33,18 @@
             </div>
 
             <div class="con-title">
-              <div>呼和酒票</div>
+              <div>{{ item.goods_name }}</div>
             </div>
 
             <div class="con-def">默认</div>
 
-            <div class="con-price">￥206.00</div>
+            <div class="con-price">￥{{ item.goods_price }}</div>
 
             <div class="stepAdd fr">
               <!-- <van-stepper v-model="item.num" @plus='add(index)' @minus='del(index)' async-change @change="onChange($event,index)" theme="round" button-size="22" disable-input /> -->
               <van-stepper
                 min="6"
-                v-model="item.num"
+                v-model="item.buy_num"
                 @plus="add(index)"
                 @minus="del(index)"
                 async-change
@@ -70,7 +70,7 @@
       </div>
       <div class="fr rigth" v-if="this.btnFlag">
         <div class="allPrice fl">
-          合计: <span style="color: red; font-size: 18px">{{ allPrice }}</span>
+          合计 : <span style="color: red; font-size: 18px">{{ allPrice }}</span>
         </div>
         <div class="handelPrice fl" @click="okShopping">
           <van-button class="btn" round>去结算</van-button>
@@ -87,7 +87,7 @@
 
 <script>
 import { Toast } from "vant";
-
+import { getCart, editNum } from "@/api/user";
 export default {
   name: "shopping",
   data() {
@@ -96,19 +96,23 @@ export default {
       allPrice: 0,
       btnFlag: true,
       timer: null,
+      isSelected: false,
       shopList: [
-        {
-          id: "0",
-          name: "这是一件商品1",
-          num: 6,
-          price: "206",
-          isSelected: true,
-        },
+        // {
+        //   id: "0",
+        //   name: "这是一件商品1",
+        //   num: 6,
+        //   price: "206",
+        //   isSelected: true,
+        // },
       ],
+      itemList: [], //购物车数据
+      id:'',
     };
   },
   created() {
     this.initPrice();
+    this.getCart();
   },
   methods: {
     // 初始化用户选中的物品
@@ -144,30 +148,48 @@ export default {
     },
     //   选中商品计算价格
     btnHandel(flag, i) {
+      console.log(flag, i);
       this.$set(this.shopList[i], "isSelected", flag);
       let allSEl = this.shopList.filter((e) => !e.isSelected);
       allSEl.length == "0" ? (this.selAll = true) : (this.selAll = false);
       flag
         ? (this.allPrice += Number(
-            this.shopList[i].price * this.shopList[i].num
+            this.shopList[i].goods_price * this.shopList[i].buy_num
           ))
         : (this.allPrice -= Number(
-            this.shopList[i].price * this.shopList[i].num
+            this.shopList[i].goods_price * this.shopList[i].buy_num
           ));
     },
     //   增加
-    add(index) {
-      if (this.shopList[index].isSelected) {
-        this.shopList[index].num = this.shopList[index].num + 5;
-        this.allPrice += Number(this.shopList[index].price);
-      }
+    async add(index) {
+      this.shopList[index].buy_num = this.shopList[index].buy_num + 5;
+      try {
+        let data = {
+          goods_id: index,
+          edit_type: 1,
+        };
+        let res = await editNum(data);
+      } catch (error) {}
+
+      // if (this.shopList[index].isSelected) {
+      //   this.shopList[index].num = this.shopList[index].num + 5;
+      //   this.allPrice += Number(this.shopList[index].price);
+      // }
     },
     //   减少
-    del(index) {
-      if (this.shopList[index].isSelected) {
-        this.shopList[index].num = this.shopList[index].num - 5;
-        this.allPrice -= Number(this.shopList[index].price);
-      }
+    async del(index) {
+      this.shopList[index].buy_num = this.shopList[index].buy_num - 5;
+      try {
+        let data = {
+          goods_id: index,
+          edit_type: 0,
+        };
+        let res = await editNum(data);
+      } catch (error) {}
+      // if (this.shopList[index].isSelected) {
+      //   this.shopList[index].num = this.shopList[index].num - 5;
+      //   this.allPrice -= Number(this.shopList[index].price);
+      // }
     },
     //   删除购物车的物品
     delGoods() {
@@ -190,12 +212,28 @@ export default {
 
     // 去结算按钮
     okShopping() {
-      this.$router.push("/my/okShopping");
+      this.$router.push(
+        {
+          path:"/my/okShopping",
+          query:{
+            id:this.shopList.goods_id
+          }
+        }
+      );
       // if(this.allPrice >= 0){
       //   Toast('请选择商品');
       // }else if(this.allPrice <= 0){
       //   this.$router.push('/my/okShopping')
       // }
+    },
+
+    // 获取购物车数据
+    async getCart() {
+      try {
+        let res = await getCart();
+        console.log(res);
+        this.shopList = res.data;
+      } catch (error) {}
     },
   },
 };
@@ -219,7 +257,7 @@ export default {
 
     .list_left {
       height: 108px;
-
+      margin-bottom: 10px;
       .checkBox {
         width: 50px;
         height: 50px;
@@ -334,7 +372,7 @@ export default {
   font-size: 14px;
   color: #999;
   padding-left: 160px;
-  margin: 12px 0;
+  margin: 8px 0;
 }
 .con-price {
   font-size: 16px;

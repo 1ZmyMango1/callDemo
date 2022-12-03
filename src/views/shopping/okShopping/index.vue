@@ -89,11 +89,15 @@ export default {
       checkeds: false,
       merchandise:[],
       item:[],
+      id:''
     };
   },
   created() {
     this.item = this.$route.query.item
     console.log(this.item,'每一项地址');
+
+    this.id = this.$route.query.id
+    console.log(this.id);
   },
   mounted() {},
   methods: {

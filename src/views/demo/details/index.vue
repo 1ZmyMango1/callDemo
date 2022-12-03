@@ -53,39 +53,29 @@
         </div>
         <div class="buttom-two">
           <div class="two-left">折扣卷：0</div>
-          <div class="two-rights" @click="$router.push('/demo/particulars')">
-            明细
-          </div>
+          <div class="two-rights" @click="particulars">明细</div>
           <div class="two-right">自主认购</div>
         </div>
         <div class="buttom-one">
           <div class="one-left">折扣商品：0</div>
-          <div class="one-right" @click="$router.push('/demo/particulars')">
-            明细
-          </div>
+          <div class="one-right" @click="particulars">明细</div>
         </div>
       </div>
 
       <div class="base">
         <div class="base-top">
           <div class="top-left">配售商品：0</div>
-          <div class="top-right" @click="$router.push('/demo/particulars')">
-            明细
-          </div>
+          <div class="top-right" @click="particulars">明细</div>
           <div class="top-right" @click="unloading">一件转存</div>
         </div>
         <div class="base-two">
           <div class="two-left">可售商品：0</div>
-          <div class="two-rights" @click="$router.push('/demo/particulars')">
-            明细
-          </div>
+          <div class="two-rights" @click="particulars">明细</div>
           <div class="two-right">委托销售</div>
         </div>
         <div class="base-one">
           <div class="one-left">转存商品：0</div>
-          <div class="one-right" @click="$router.push('/demo/particulars')">
-            明细
-          </div>
+          <div class="one-right" @click="particulars">明细</div>
           <div class="one-rights">确认转存</div>
         </div>
       </div>
@@ -152,7 +142,7 @@
 <script>
 import { Toast } from "vant";
 import { Notify } from "vant";
-import { goodsDetail } from "@/api/user";
+import { goodsDetail, addCart } from "@/api/user";
 export default {
   data() {
     return {
@@ -170,7 +160,8 @@ export default {
         },
       ],
       id: "", //商品id
-      ids:'',
+      ids: "",
+      idParticulars:'',
       goodsList: [], //商品详情
       censusList: [],
       userList: [],
@@ -178,7 +169,8 @@ export default {
   },
   created() {
     this.id = this.$route.query.id;
-    this.ids = this.$route.query.ids
+    this.ids = this.$route.query.ids;
+    this.idParticulars = this.$route.query.idParticulars
     this.goodsDetail();
   },
   methods: {
@@ -201,8 +193,13 @@ export default {
       this.value = this.value - 6;
     },
 
-    confirm() {
+    async confirm() {
       if (this.value > 5) {
+        let data = {
+          goods_id: this.id,
+          goods_num: this.value,
+        };
+        let res = await addCart(data);
         this.$router.push("/my/okShopping");
       } else {
         Toast("购买数量默认是 6 哦");
@@ -236,6 +233,16 @@ export default {
       });
     },
 
+    // 明细
+    particulars() {
+      this.$router.push({
+        path: "/demo/particulars",
+        query: {
+          id: this.id,
+        },
+      });
+    },
+
     // 商品详情信息
     async goodsDetail() {
       if (this.id) {
@@ -250,10 +257,22 @@ export default {
         } catch (error) {
           console.log(error);
         }
-      } else {
+      } else if(this.ids){
         try {
           let data = {
             goods_id: this.ids,
+          };
+          let res = await goodsDetail(data);
+          this.goodsList = res.data.goods;
+          this.censusList = res.data.census;
+          this.userList = res.data.user;
+        } catch (error) {
+          console.log(error);
+        }
+      }else {
+        try {
+          let data = {
+            goods_id: this.idParticulars,
           };
           let res = await goodsDetail(data);
           this.goodsList = res.data.goods;

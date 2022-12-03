@@ -9,10 +9,10 @@
 
         <div class="box-img">
           <div class="box-imgs">
-            <img src="../../../assets/img/head.png" alt="" />
+            <img :src="userInfo.head_pic" alt="" />
           </div>
           <div>
-            <div class="box-img-text">房东的猫</div>
+            <div class="box-img-text">{{userInfo.nickname}}</div>
             <div class="box-img-texts">当前等级: 无</div>
           </div>
         </div>
@@ -52,13 +52,27 @@
 </template>
 
 <script>
+import {
+  userlLogin,
+} from "@/api/user";
 export default {
   data() {
-    return {};
+    return {
+      userInfo:[]
+    };
+  },
+  created(){
+    this.userlLogin()
   },
   methods: {
     onReturn(){
       this.$router.go(-1)
+    },
+
+    // 个人信息
+    async userlLogin() {
+      let res = await userlLogin();
+      this.userInfo = res.data
     }
   },
 };

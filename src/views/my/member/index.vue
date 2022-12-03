@@ -3,7 +3,7 @@
     <div class="boxs">
       <div class="box-head">
         <div class="box-heads">
-          <div @click="$router.push('/my')"><img src="../../../assets/img/icon_back.png" alt="" /></div>
+          <div @click="onReturn"><img src="../../../assets/img/icon_back.png" alt="" /></div>
           <div class="box-head-text">会员中心</div>
         </div>
 
@@ -56,7 +56,11 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    onReturn(){
+      this.$router.go(-1)
+    }
+  },
 };
 </script>
 

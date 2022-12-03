@@ -1,107 +1,113 @@
 <template>
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
     <van-nav-bar title="商品详情" left-arrow @click-left="onClickLeft" />
-    <div class="box-img">
-      <img src="../../../assets/img/Rectangle.png" alt="" />
-    </div>
-
-    <div class="card-head">
-      <div class="card-text">
-        钱塘之韵
-        <div class="card-one">121234</div>
-      </div>
-      <div class="card-price">当前价格</div>
-    </div>
-
-    <div class="scope-head">
-      <div class="scope-text">
-        价格范围：
-        <div class="scope-one">121234</div>
-      </div>
-      <div class="scope-price">￥206</div>
-    </div>
-
-    <div class="call" @click="$router.push('/demo/examine')">查看详情</div>
-
-    <div class="information">数据统计</div>
-
-    <div class="num">
-      <div class="num-left">总数量：20000</div>
-      <div class="num-right">总成交量：20000</div>
-    </div>
-
-    <div class="num">
-      <div class="num-left">总数量：20000</div>
-      <div class="num-right">总成交量：20000</div>
-    </div>
-
-    <div class="cost">
-      <div class="cost-left">我的商品：0</div>
-      <div class="cost-right">商品价值：0</div>
-    </div>
-
-    <div class="buttom">
-      <div class="buttom-top">
-        <div class="top-left">提货商品：0</div>
-        <div class="top-right">申请提货</div>
-        <div class="top-right">自主认购</div>
-      </div>
-      <div class="buttom-two">
-        <div class="two-left">折扣卷：0</div>
-        <div class="two-rights" @click="$router.push('/demo/particulars')">
-          明细
+    <div>
+      <div>
+        <div class="box-img">
+          <img :src="goodsList.goods_banner" alt="" />
         </div>
-        <div class="two-right">自主认购</div>
-      </div>
-      <div class="buttom-one">
-        <div class="one-left">折扣商品：0</div>
-        <div class="one-right" @click="$router.push('/demo/particulars')">
-          明细
+
+        <div class="card-head">
+          <div class="card-text">
+            {{ goodsList.goods_name }}
+            <!-- <div class="card-one">121234</div> -->
+          </div>
+          <div class="card-price">当前价格</div>
+        </div>
+
+        <div class="scope-head">
+          <div class="scope-text">
+            价格范围：
+            <div class="scope-one">
+              {{ goodsList.min_price }}~{{ goodsList.max_price }}
+            </div>
+          </div>
+          <div class="scope-price">￥{{ goodsList.goods_price }}</div>
         </div>
       </div>
-    </div>
 
-    <div class="base">
-      <div class="base-top">
-        <div class="top-left">配售商品：0</div>
-        <div class="top-right" @click="$router.push('/demo/particulars')">
-          明细
-        </div>
-        <div class="top-right">一件转存</div>
-      </div>
-      <div class="base-two">
-        <div class="two-left">可售商品：0</div>
-        <div class="two-rights" @click="$router.push('/demo/particulars')">
-          明细
-        </div>
-        <div class="two-right">委托销售</div>
-      </div>
-      <div class="base-one">
-        <div class="one-left">转存商品：0</div>
-        <div class="one-right" @click="$router.push('/demo/particulars')">
-          明细
-        </div>
-        <div class="one-rights">确认转存</div>
-      </div>
-    </div>
+      <div class="call" @click="look">查看详情</div>
 
-    <div class="footer">
-      <div class="footer-love" @click="showLove">
-        <div>
-          <img
-            src="../../../assets/img/Frame.png"
-            alt=""
-            v-if="isShowLove"
-          /><img src="../../../assets/img/Vector.png" alt="" v-else />
+      <div class="information">数据统计</div>
+
+      <div class="num">
+        <div class="num-left">总数量：{{ censusList.total_num }}</div>
+        <div class="num-right">总成交量：{{ censusList.total_deal_num }}</div>
+      </div>
+
+      <div class="num">
+        <div class="num-left">总价值：{{ censusList.total_money }}</div>
+        <div class="num-right">总成交额：{{ censusList.total_deal_money }}</div>
+      </div>
+
+      <div class="cost">
+        <div class="cost-left">我的商品：{{ userList.goods_total_num }}</div>
+        <div class="cost-right">商品价值：{{ userList.goods_total_money }}</div>
+      </div>
+
+      <div class="buttom">
+        <div class="buttom-top">
+          <div class="top-left">提货商品：0</div>
+          <div class="top-right" @click="upGoods">申请提货</div>
+          <div class="top-right">自主认购</div>
         </div>
-        <span>收藏</span>
+        <div class="buttom-two">
+          <div class="two-left">折扣卷：0</div>
+          <div class="two-rights" @click="$router.push('/demo/particulars')">
+            明细
+          </div>
+          <div class="two-right">自主认购</div>
+        </div>
+        <div class="buttom-one">
+          <div class="one-left">折扣商品：0</div>
+          <div class="one-right" @click="$router.push('/demo/particulars')">
+            明细
+          </div>
+        </div>
       </div>
-      <div class="footer-shp" @click="$router.push('/shopping')">
-        <div><img src="../../../assets/img/购物车.png" alt="" /></div>
-        <span>购物车</span>
+
+      <div class="base">
+        <div class="base-top">
+          <div class="top-left">配售商品：0</div>
+          <div class="top-right" @click="$router.push('/demo/particulars')">
+            明细
+          </div>
+          <div class="top-right" @click="unloading">一件转存</div>
+        </div>
+        <div class="base-two">
+          <div class="two-left">可售商品：0</div>
+          <div class="two-rights" @click="$router.push('/demo/particulars')">
+            明细
+          </div>
+          <div class="two-right">委托销售</div>
+        </div>
+        <div class="base-one">
+          <div class="one-left">转存商品：0</div>
+          <div class="one-right" @click="$router.push('/demo/particulars')">
+            明细
+          </div>
+          <div class="one-rights">确认转存</div>
+        </div>
       </div>
-      <div class="shopping" @click="$router.push('/shopping')">购物车</div>
-      <div class="okGo" @click="purchase">立即购买</div>
+
+      <div class="footer">
+        <div class="footer-love" @click="showLove">
+          <div>
+            <img
+              src="../../../assets/img/Frame.png"
+              alt=""
+              v-if="isShowLove"
+            /><img src="../../../assets/img/Vector.png" alt="" v-else />
+          </div>
+          <span>收藏</span>
+        </div>
+        <div class="footer-shp" @click="$router.push('/shopping')">
+          <div><img src="../../../assets/img/购物车.png" alt="" /></div>
+          <span>购物车</span>
+        </div>
+        <div class="shopping" @click="$router.push('/shopping')">购物车</div>
+        <div class="okGo" @click="purchase">立即购买</div>
+      </div>
     </div>
 
     <van-popup
@@ -115,9 +121,9 @@
           <img src="../../../assets/img/Rectangle.png" alt="" />
         </div>
         <div class="pays">
-          <div class="pay">￥{{allPrice}}</div>
+          <div class="pay">￥{{ allPrice }}</div>
           <div class="repertory">库存：15789523件</div>
-          <div class="select">已选择：默认{{value}}件</div>
+          <div class="select">已选择：默认{{ value }}件</div>
         </div>
       </div>
 
@@ -126,7 +132,16 @@
 
       <div class="num">
         <div class="num-one">购买数量</div>
-        <div class="num-two"><van-stepper min="6" @plus="add()" @minus="del()" v-model="value" input-width="30px" button-size="25px"/></div>
+        <div class="num-two">
+          <van-stepper
+            min="6"
+            @plus="add()"
+            @minus="del()"
+            v-model="value"
+            input-width="30px"
+            button-size="25px"
+          />
+        </div>
       </div>
 
       <div class="confirm" @click="confirm">确定</div>
@@ -135,14 +150,16 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
+import { Toast } from "vant";
+import { Notify } from "vant";
+import { goodsDetail } from "@/api/user";
 export default {
   data() {
     return {
       isShowLove: false,
       isShowGo: false,
-      value:6,
-      allPrice:206,
+      value: 6,
+      allPrice: 206,
       shopList: [
         {
           id: "0",
@@ -152,7 +169,17 @@ export default {
           isSelected: true,
         },
       ],
+      id: "", //商品id
+      ids:'',
+      goodsList: [], //商品详情
+      censusList: [],
+      userList: [],
     };
+  },
+  created() {
+    this.id = this.$route.query.id;
+    this.ids = this.$route.query.ids
+    this.goodsDetail();
   },
   methods: {
     onClickLeft() {
@@ -166,21 +193,77 @@ export default {
     },
 
     // 增加
-    add(){
-      this.value = this.value + 6
+    add() {
+      this.value = this.value + 6;
     },
     // 减少
-    del(){
-      this.value = this.value - 6
+    del() {
+      this.value = this.value - 6;
     },
 
-    confirm(){
-      if(this.value > 5){
-        this.$router.push('/my/okShopping')
-      }else {
-        Toast('购买数量默认是 6 哦');
+    confirm() {
+      if (this.value > 5) {
+        this.$router.push("/my/okShopping");
+      } else {
+        Toast("购买数量默认是 6 哦");
       }
-    }
+    },
+
+    // 申请提货
+    upGoods() {
+      Notify({
+        message: "提货成功",
+        color: "#fff",
+        background: "#F55E68",
+      });
+    },
+    // 转存
+    unloading() {
+      Notify({
+        message: "转存成功",
+        color: "#fff",
+        background: "#F55E68",
+      });
+    },
+
+    // 查看详情
+    look() {
+      this.$router.push({
+        path: "/demo/examine",
+        query: {
+          id: this.id,
+        },
+      });
+    },
+
+    // 商品详情信息
+    async goodsDetail() {
+      if (this.id) {
+        try {
+          let data = {
+            goods_id: this.id,
+          };
+          let res = await goodsDetail(data);
+          this.goodsList = res.data.goods;
+          this.censusList = res.data.census;
+          this.userList = res.data.user;
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        try {
+          let data = {
+            goods_id: this.ids,
+          };
+          let res = await goodsDetail(data);
+          this.goodsList = res.data.goods;
+          this.censusList = res.data.census;
+          this.userList = res.data.user;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
   },
 };
 </script>
@@ -629,7 +712,7 @@ export default {
 }
 
 .confirm {
-  width:343px;
+  width: 343px;
   height: 40px;
   background-color: #f55e68;
   color: #fff;

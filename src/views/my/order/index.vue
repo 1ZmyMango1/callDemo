@@ -2,12 +2,17 @@
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
     <van-nav-bar title="我的订单" left-arrow @click-left="onClickLeft" />
 
-    <van-tabs v-model="active" color="#F55E68">
+    <van-tabs
+      v-model="active"
+      color="#F55E68"
+      @click="onClick"
+      @rendered="rendered"
+    >
       <van-tab title="全部">
-        <!-- <div class="box-img">
-          <img src="../../../assets/img/Group 427320023.png" alt="">
-        </div> -->
-        <div class="card">
+        <div class="box-img">
+          <img v-if="isshow" src="../../../assets/img/Group 427320023.png" alt="">
+          <div v-else>
+            <div class="card" v-for="item in orderList" :key="item.id">
           <div class="card-title">
             <div class="card-img">
               <div>
@@ -17,29 +22,29 @@
                   style="width: 20px; height: 20px"
                 />
               </div>
-              <span>呼和酒票</span>
+              <span>{{ item.goods_name }}</span>
             </div>
             <div class="card-text">完成</div>
           </div>
           <div class="card-middle">
             <div>
               <img
-                src="../../../assets/img/commodity.png"
+                :src="item.goods_image"
                 alt=""
                 style="width: 106px; height: 106px"
               />
             </div>
             <div>
               <div class="card-price">
-                <div class="card-price-title">呼和酒票</div>
-                <div class="card-prices">￥200.00</div>
+                <div class="card-price-title">{{ item.goods_name }}</div>
+                <div class="card-prices">￥{{ item.unit_price }}</div>
               </div>
               <div class="card-default">
                 <div class="card-defaults">默认</div>
-                <div class="card-default-one">x1</div>
+                <div class="card-default-one">x{{ item.sale_num }}</div>
               </div>
               <div class="card-answer">
-                <div>应付:￥200.00</div>
+                <div>应付:￥{{ item.pay_money }}</div>
               </div>
             </div>
           </div>
@@ -48,12 +53,16 @@
             <div class="card-btn-go">已完成</div>
           </div>
         </div>
+          </div>
+        </div>
+        
       </van-tab>
+
       <van-tab title="待付款">
-        <!-- <div class="box-img">
-          <img src="../../../assets/img/Group 427320023.png" alt="" />
-        </div> -->
-        <div class="card">
+        <div class="box-img">
+          <img v-if="isshow" src="../../../assets/img/Group 427320023.png" alt="" />
+          <div v-else>
+            <div class="card" v-for="item in orderList" :key="item.id">
           <div class="card-title">
             <div class="card-img">
               <div>
@@ -63,43 +72,51 @@
                   style="width: 20px; height: 20px"
                 />
               </div>
-              <span>呼和酒票</span>
+              <span>{{ item.goods_name }}</span>
             </div>
             <div class="card-text">待支付</div>
           </div>
           <div class="card-middle">
             <div>
               <img
-                src="../../../assets/img/commodity.png"
+                :src="item.goods_image"
                 alt=""
                 style="width: 106px; height: 106px"
               />
             </div>
             <div>
               <div class="card-price">
-                <div class="card-price-title">呼和酒票</div>
-                <div class="card-prices">￥200.00</div>
+                <div class="card-price-title">{{ item.goods_name }}</div>
+                <div class="card-prices">￥{{ item.unit_price }}</div>
               </div>
               <div class="card-default">
                 <div class="card-defaults">默认</div>
-                <div class="card-default-one">x1</div>
+                <div class="card-default-one">x{{ item.sale_num }}</div>
               </div>
               <div class="card-answer">
-                <div>应付:￥200.00</div>
+                <div>应付:￥{{ item.pay_money }}</div>
               </div>
             </div>
           </div>
           <div class="card-btn">
-            <div class="card-btn-cancel">取消订单</div>
-            <div class="card-btn-go">去支付</div>
+            <div class="card-btn-cancel" @click="cancelBtn(item.id)">
+              取消订单
+            </div>
+            <div class="card-btn-go" @click="$router.push('/my/okShopping')">
+              去支付
+            </div>
           </div>
         </div>
+          </div>
+        </div>
+        
       </van-tab>
+
       <van-tab title="待收货">
-        <!-- <div class="box-img">
-          <img src="../../../assets/img/Group 427320023.png" alt="" />
-        </div> -->
-        <div class="card">
+        <div class="box-img">
+          <img v-if="isshow" src="../../../assets/img/Group 427320023.png" alt="" />
+          <div v-else>
+            <div class="card" v-for="item in orderList" :key="item.id">
           <div class="card-title">
             <div class="card-img">
               <div>
@@ -109,128 +126,147 @@
                   style="width: 20px; height: 20px"
                 />
               </div>
-              <span>呼和酒票</span>
+              <span>{{ item.goods_name }}</span>
             </div>
             <div class="card-text">待收货</div>
           </div>
           <div class="card-middle">
             <div>
               <img
-                src="../../../assets/img/commodity.png"
+                :src="item.goods_image"
                 alt=""
                 style="width: 106px; height: 106px"
               />
             </div>
             <div>
               <div class="card-price">
-                <div class="card-price-title">呼和酒票</div>
-                <div class="card-prices">￥200.00</div>
+                <div class="card-price-title">{{ item.goods_name }}</div>
+                <div class="card-prices">￥{{ item.unit_price }}</div>
               </div>
               <div class="card-default">
                 <div class="card-defaults">默认</div>
-                <div class="card-default-one">x1</div>
+                <div class="card-default-one">x{{ item.sale_num }}</div>
               </div>
               <div class="card-answer">
-                <div>应付:￥200.00</div>
+                <div>应付:￥{{ item.pay_money }}</div>
               </div>
             </div>
           </div>
           <div class="card-btn">
-            <div class="card-btn-cancel">申请退款</div>
-            <div class="card-btn-cancel">取消订单</div>
-            <div class="card-btn-go">去支付</div>
+            <div class="card-btn-cancel" @click="refund(item.id)">申请退款</div>
+            <div class="card-btn-cancel" @click="cancelBtn(item.id)">
+              取消订单
+            </div>
+            <div class="card-btn-go" @click="putAway(item.id)">确认收货</div>
           </div>
         </div>
+          </div>
+        </div>
+        
       </van-tab>
+
       <van-tab title="已完成">
-        <!-- <div class="box-img">
-          <img src="../../../assets/img/Group 427320023.png" alt="" />
-        </div> -->
-        <div class="card">
-          <div class="card-title">
-            <div class="card-img">
-              <div>
-                <img
-                  src="../../../assets/img/logo.png"
-                  alt=""
-                  style="width: 20px; height: 20px"
-                />
+        <div class="box-img">
+          <img
+            v-if="isshow"
+            src="../../../assets/img/Group 427320023.png"
+            alt=""
+          />
+          <div v-else>
+            <div class="card" v-for="item in orderList" :key="item.id">
+              <div class="card-title">
+                <div class="card-img">
+                  <div>
+                    <img
+                      src="../../../assets/img/logo.png"
+                      alt=""
+                      style="width: 20px; height: 20px"
+                    />
+                  </div>
+                  <span>{{ item.goods_name }}</span>
+                </div>
+                <div class="card-text">已完成</div>
               </div>
-              <span>呼和酒票</span>
+              <div class="card-middle">
+                <div>
+                  <img
+                    :src="item.goods_image"
+                    alt=""
+                    style="width: 106px; height: 106px"
+                  />
+                </div>
+                <div>
+                  <div class="card-price">
+                    <div class="card-price-title">{{ item.goods_name }}</div>
+                    <div class="card-prices">￥{{ item.unit_price }}</div>
+                  </div>
+                  <div class="card-default">
+                    <div class="card-defaults">默认</div>
+                    <div class="card-default-one">x{{ item.sale_num }}</div>
+                  </div>
+                  <div class="card-answer">
+                    <div>应付:￥{{ item.pay_money }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-btn">
+                <!-- <div class="card-btn-cancel">取消订单</div> -->
+                <div class="card-btn-go">已完成</div>
+              </div>
             </div>
-            <div class="card-text">已完成</div>
-          </div>
-          <div class="card-middle">
-            <div>
-              <img
-                src="../../../assets/img/commodity.png"
-                alt=""
-                style="width: 106px; height: 106px"
-              />
-            </div>
-            <div>
-              <div class="card-price">
-                <div class="card-price-title">呼和酒票</div>
-                <div class="card-prices">￥200.00</div>
-              </div>
-              <div class="card-default">
-                <div class="card-defaults">默认</div>
-                <div class="card-default-one">x1</div>
-              </div>
-              <div class="card-answer">
-                <div>应付:￥200.00</div>
-              </div>
-            </div>
-          </div>
-          <div class="card-btn">
-            <!-- <div class="card-btn-cancel">取消订单</div> -->
-            <div class="card-btn-go">已完成</div>
           </div>
         </div>
       </van-tab>
+
       <van-tab title="已关闭">
-        <!-- <div class="box-img">
-          <img src="../../../assets/img/Group 427320023.png" alt="" />
-        </div> -->
-        <div class="card">
-          <div class="card-title">
-            <div class="card-img">
-              <div>
-                <img
-                  src="../../../assets/img/logo.png"
-                  alt=""
-                  style="width: 20px; height: 20px"
-                />
+        <div class="box-img">
+          <img
+            v-if="!isshow"
+            src="../../../assets/img/Group 427320023.png"
+            alt=""
+          />
+          <div v-else>
+            <div class="card" v-for="item in orderList" :key="item.id">
+              <div class="card-title">
+                <div class="card-img">
+                  <div>
+                    <img
+                      src="../../../assets/img/logo.png"
+                      alt=""
+                      style="width: 20px; height: 20px"
+                    />
+                  </div>
+                  <span>{{ item.goods_name }}</span>
+                </div>
+                <div class="card-text">已关闭</div>
               </div>
-              <span>呼和酒票</span>
+              <div class="card-middle">
+                <div>
+                  <img
+                    :src="item.goods_image"
+                    alt=""
+                    style="width: 106px; height: 106px"
+                  />
+                </div>
+                <div>
+                  <div class="card-price">
+                    <div class="card-price-title">{{ item.goods_name }}</div>
+                    <div class="card-prices">￥{{ item.unit_price }}</div>
+                  </div>
+                  <div class="card-default">
+                    <div class="card-defaults">默认</div>
+                    <div class="card-default-one">x{{ item.sale_num }}</div>
+                  </div>
+                  <div class="card-answer">
+                    <div>应付:￥{{ item.pay_money }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-btn">
+                <!-- <div class="card-btn-cancel">取消订单</div> -->
+                <div class="card-btn-go">已关闭</div>
+              </div>
             </div>
-            <div class="card-text">已关闭</div>
-          </div>
-          <div class="card-middle">
-            <div>
-              <img
-                src="../../../assets/img/commodity.png"
-                alt=""
-                style="width: 106px; height: 106px"
-              />
-            </div>
-            <div>
-              <div class="card-price">
-                <div class="card-price-title">呼和酒票</div>
-                <div class="card-prices">￥200.00</div>
-              </div>
-              <div class="card-default">
-                <div class="card-defaults">默认</div>
-                <div class="card-default-one">x1</div>
-              </div>
-              <div class="card-answer">
-                <div>应付:￥200.00</div>
-              </div>
-            </div>
-          </div>
-          <div class="card-btn">
-            <!-- <div class="card-btn-cancel">取消订单</div> -->
-            <div class="card-btn-go">已关闭</div>
           </div>
         </div>
       </van-tab>
@@ -239,30 +275,83 @@
 </template>
 
 <script>
-import { orderList } from "@/api/user"
+import { orderList, editOrder } from "@/api/user";
 export default {
   data() {
     return {
       active: 0,
+      orderList: [], //订单详情
+      isshow: false,
     };
   },
-  created(){
-    this.orderList()
-  },
+  created() {},
   methods: {
     onClickLeft() {
       this.$router.push("/my");
     },
 
-    async orderList(){
+    // 订单详情
+    async onClick(name, title) {
+      console.log(name, title);
       let data = {
-        status:2,
-        pageNum:1,
-        pageSize:10
-      }
-      let res = await orderList(data)
+        status: name,
+        pageNum: 1,
+        pageSize: 10,
+      };
+      let res = await orderList(data);
       console.log(res);
-    }
+      this.orderList = res.data;
+    },
+
+    // 默认
+    async rendered(name, title) {
+      // console.log(name, title);
+      let data = {
+        status: name,
+        pageNum: 1,
+        pageSize: 10,
+      };
+      let res = await orderList(data);
+      console.log(res);
+      this.orderList = res.data;
+    },
+
+    // 取消订单按钮
+    async cancelBtn(id) {
+      console.log(id);
+      try {
+        let data = {
+          order_id: id,
+          type: 0,
+        };
+        let res = await editOrder(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 申请退款
+    async refund(id) {
+      try {
+        let data = {
+          order_id: id,
+          type: 0,
+        };
+        let res = await editOrder(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 确认收货
+    async putAway(id) {
+      try {
+        let data = {
+          order_id: id,
+          type: 0,
+        };
+        let res = await editOrder(data);
+      } catch (error) {}
+    },
   },
 };
 </script>

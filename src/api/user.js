@@ -127,6 +127,15 @@ export function orderList(params){
   })
 }
 
+// 修改订单状态
+export function editOrder(params){
+  return http({
+    url:'/Order/editOrder',
+    method:'GET',
+    params
+  })
+}
+
 // 地址列表
 export function addressList(params){
   return http({
@@ -160,5 +169,14 @@ export function goodsList(data){
     url:'/Goods/goodsList',
     method:'POST',
     data
+  })
+}
+
+// 商品详情
+export function goodsDetail(params){
+  return http({
+    url:'/Goods/goodsDetail',
+    method:'GET',
+    params
   })
 }

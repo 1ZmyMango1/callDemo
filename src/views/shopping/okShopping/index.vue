@@ -2,7 +2,7 @@
   <div class="box">
     <van-nav-bar title="确认订单" left-arrow @click-left="onClickLeft" />
 
-    <div class="box-addres">
+    <div class="box-addres" @click.stop="$router.push('/my/address')">
       <div class="box-addres-img">
         <img src="../../../assets/img/icon_addr.png" alt="" />
       </div>
@@ -80,25 +80,33 @@
 
 <script>
 import { Toast } from "vant";
+import { goodsList } from "@/api/user";
 export default {
   data() {
     return {
       value: "",
       checked: true,
       checkeds: false,
+      merchandise:[],
+      item:[],
     };
   },
-  created() {},
+  created() {
+    this.item = this.$route.query.item
+    console.log(this.item,'每一项地址');
+  },
   mounted() {},
-  destoryed() {},
   methods: {
     onClickLeft() {
-      this.$router.push("/my");
+      this.$router.go(-1);
     },
 
-    onEdit() {
-      Toast("修改地址");
-    },
+    // 商品信息
+    async goodsList(){
+      let res = await goodsList()
+      console.log(res);
+      this.merchandise  = res.data
+    }
   },
 };
 </script>

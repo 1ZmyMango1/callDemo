@@ -2,7 +2,7 @@
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
     <van-nav-bar title="收货地址" left-arrow @click-left="onClickLeft" />
 
-    <div>
+    <div @click.stop="onSelect(item)">
       <van-address-list
         v-model="chosenAddressId"
         :list="list"
@@ -16,62 +16,55 @@
 </template>
 
 <script>
-import { Toast } from 'vant';
-import { addressList } from "@/api/user"
+import { Toast } from "vant";
+import { addressList } from "@/api/user";
 export default {
   data() {
     return {
-       chosenAddressId: '1',
-      list: [
-        {
-          id: '1',
-          name: '张三',
-          tel: '13000000000',
-          address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室',
-          isDefault: true,
-        },
-        {
-          id: '2',
-          name: '李四',
-          tel: '1310000000',
-          address: '浙江省杭州市拱墅区莫干山路 50 号',
-        },
-      ],
+      chosenAddressId: "1",
+      list: [],
     };
   },
   created() {
-    this.addressList()
+    this.addressList();
   },
   mounted() {},
   methods: {
     onClickLeft() {
-      this.$router.push("/my");
+      this.$router.push('/my');
     },
 
     // 地址列表
-    async addressList(){
-      let res = await addressList()
+    async addressList() {
+      let res = await addressList();
       console.log(res);
+      this.list = res.data;
     },
 
+    // 新增收货地址
     onAdd() {
-      Toast('新增收货地址');
-      this.$router.push(
-        {
-          path:"/my/addAddress",
-          query:{name:'新增收货地址'}
-        }
-      )
+      Toast("新增收货地址");
+      this.$router.push({
+        path: "/my/addAddress",
+        query: { name: "新增收货地址" },
+      });
     },
+    // 编辑收货地址
     onEdit(item) {
-      Toast('编辑地址');
-      this.$router.push(
-        {
-          path:"/my/addAddress",
-          query:{name:'编辑收货地址',item}
-        }
-      )
+      Toast("编辑地址");
+      this.$router.push({
+        path: "/my/addAddress",
+        query: { name: "编辑收货地址", item },
+      });
     },
+
+    // 选中的地址
+    onSelect(item){
+      this.$router.push({
+        path:'/my/okShopping',
+        query:{item}
+      })
+    }
   },
 };
 </script>

@@ -21,12 +21,21 @@
 export default {
   data() {
     return {
-      active:0
+      active:0,
+      id:''
     };
+  },
+  created(){
+    this.id = this.$route.query.id
   },
   methods: {
     onClickLeft(){
-      this.$router.push('/demo/details')
+      this.$router.push({
+        path:'/demo/details',
+        query:{
+          ids:this.id
+        }
+      })
     }
   },
 };

@@ -42,13 +42,13 @@
     <!-- 商品信息 -->
     <van-card v-for="item in commodity" :key="item.id">
       <template #thumb>
-        <img :src="item.goods_image" style="width:95px; height:95px;" alt="" @click="$router.push('/demo/details')">
+        <img :src="item.goods_image" style="width:95px; height:95px;" alt="" @click="goDetail(item.id)">
       </template>
       <template #title>
-        <div class="title" @click="$router.push('/demo/details')">{{item.goods_name}}</div>
+        <div class="title" @click="goDetail(item.id)">{{item.goods_name}}</div>
       </template>
       <template #price>
-        <div class="price" @click="$router.push('/demo/details')">￥{{item.goods_price}}</div>
+        <div class="price" @click="goDetail(item.id)">￥{{item.goods_price}}</div>
       </template>
       <template #num>    
         <div class="button" @click="$router.push('/shopping')"><span>去购买</span></div>
@@ -91,6 +91,15 @@ export default {
       let res = await goodsList()
       console.log(res);
       this.commodity = res.data
+    },
+
+    // 跳转商品详情页
+    goDetail(id){
+      // console.log(id);
+      this.$router.push({
+        path:'/demo/details',
+        query:{id}
+      })
     }
   },
 };

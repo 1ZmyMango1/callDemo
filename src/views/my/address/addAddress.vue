@@ -109,10 +109,11 @@ export default {
       let data = {
         receiver: this.username,
         phone: this.password,
-        area_id: this.addressVal,
+        area: this.addressVal,
         address: this.text,
       };
       let res = await addUserAddress(data);
+      this.$router.push('/my/address')
     },
 
     // 删除
@@ -122,7 +123,7 @@ export default {
           id:this.idAddress
         }
         let res = await delAddress(data)
-        this.$router.push('/address')
+        this.$router.push('/my/address')
       }else {
         this.username = ''
         this.password = ''

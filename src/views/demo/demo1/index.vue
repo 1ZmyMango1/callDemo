@@ -2,11 +2,11 @@
   <div style="background-color: #f5f5f5; height: 100vh">
     <van-nav-bar title="商城" placeholder />
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
-      <van-swipe-item>5</van-swipe-item>
+      <van-swipe-item>
+        <video width="100%" height="100%" autoplay loop>
+          <source src="../../../assets/222.mp4" type="video/mp4" />
+        </video>
+      </van-swipe-item>
     </van-swipe>
 
     <div class="search">
@@ -23,7 +23,7 @@
         <img :src="member" alt="" />
         <div class="hint-text">会员中心</div>
       </div>
-      <div class="hint-box"  @click="$router.push('/demo/collect')">
+      <div class="hint-box" @click="$router.push('/demo/collect')">
         <img :src="my" alt="" />
         <div class="hint-text">我的收藏</div>
       </div>
@@ -42,16 +42,27 @@
     <!-- 商品信息 -->
     <van-card v-for="item in commodity" :key="item.id">
       <template #thumb>
-        <img :src="item.goods_image" style="width:95px; height:95px;" alt="" @click="goDetail(item.id)">
+        <img
+          :src="item.goods_image"
+          style="width: 95px; height: 95px"
+          alt=""
+          @click="goDetail(item.id)"
+        />
       </template>
       <template #title>
-        <div class="title" @click="goDetail(item.id)">{{item.goods_name}}</div>
+        <div class="title" @click="goDetail(item.id)">
+          {{ item.goods_name }}
+        </div>
       </template>
       <template #price>
-        <div class="price" @click="goDetail(item.id)">￥{{item.goods_price}}</div>
+        <div class="price" @click="goDetail(item.id)">
+          ￥{{ item.goods_price }}
+        </div>
       </template>
-      <template #num>    
-        <div class="button" @click="goShopping(item.id)"><span>去购买</span></div>
+      <template #num>
+        <div class="button" @click="goShopping(item.id)">
+          <span>去购买</span>
+        </div>
       </template>
     </van-card>
   </div>
@@ -63,7 +74,7 @@ const my = require("../../../assets/img/my.png");
 const shopping = require("../../../assets/img/shopping.png");
 const help = require("../../../assets/img/help.png");
 
-import { goodsList , addCart } from "@/api/user"
+import { goodsList, addCart } from "@/api/user";
 export default {
   name: "Demo1",
   components: {},
@@ -78,39 +89,40 @@ export default {
       my: my,
       shopping: shopping,
       help: help,
-      commodity:[]
+      commodity: [],
     };
   },
   created() {
-    this.goodsList()
+    this.goodsList();
   },
+
   mounted() {},
   methods: {
     // 商品信息
-    async goodsList(){
-      let res = await goodsList()
+    async goodsList() {
+      let res = await goodsList();
       console.log(res);
-      this.commodity = res.data
+      this.commodity = res.data;
     },
 
     // 跳转商品详情页
-    goDetail(id){
+    goDetail(id) {
       // console.log(id);
       this.$router.push({
-        path:'/demo/details',
-        query:{id}
-      })
+        path: "/demo/details",
+        query: { id },
+      });
     },
 
     // 添加商品到购物车
-    async goShopping(id){
+    async goShopping(id) {
       let data = {
-        goods_id:id,
-        goods_num:6,
-      }
-      let res = await addCart(data)
-      this.$router.push('/shopping')
-    }
+        goods_id: id,
+        goods_num: 6,
+      };
+      let res = await addCart(data);
+      this.$router.push("/shopping");
+    },
   },
 };
 </script>
@@ -119,9 +131,9 @@ export default {
 .my-swipe .van-swipe-item {
   color: #fff;
   font-size: 20px;
-  line-height: 150px;
+  // line-height: 150px;
   text-align: center;
-  background-color: #39a9ed;
+  // background-color: #39a9ed;
 }
 /deep/.van-nav-bar__title {
   font-size: 0.52667rem;
@@ -170,24 +182,24 @@ export default {
 
 .price {
   font-size: 20px;
-  color: #F55E68;
+  color: #f55e68;
   margin-top: 25px;
   margin-left: 10px;
 }
 
 .button {
-    background-color:#F55E68;
+  background-color: #f55e68;
+  height: 30px;
+  width: 100px;
+  border-radius: 50px;
+  color: #fff;
+  margin-top: 18px;
+  text-align: center;
+  span {
     height: 30px;
+    line-height: 30px;
     width: 100px;
-    border-radius: 50px;
-    color: #fff;
-    margin-top: 18px;
     text-align: center;
-    span {
-      height: 30px;
-      line-height: 30px;
-      width: 100px;
-      text-align: center;
-    }
+  }
 }
 </style>

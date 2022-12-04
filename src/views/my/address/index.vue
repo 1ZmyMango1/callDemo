@@ -2,7 +2,7 @@
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
     <van-nav-bar title="收货地址" left-arrow @click-left="onClickLeft" />
 
-    <div @click.stop="onSelect(item)">
+    <div>
       <van-address-list
         v-model="chosenAddressId"
         :list="list"
@@ -10,6 +10,7 @@
         add-button-text="新增收货地址"
         @add="onAdd"
         @edit="onEdit"
+        @click-item="onSelect"
       />
     </div>
   </div>
@@ -31,7 +32,7 @@ export default {
   mounted() {},
   methods: {
     onClickLeft() {
-      this.$router.push('/my');
+      this.$router.push("/my");
     },
 
     // 地址列表
@@ -59,12 +60,12 @@ export default {
     },
 
     // 选中的地址
-    onSelect(item){
+    onSelect(item) {
       this.$router.push({
-        path:'/my/okShopping',
-        query:{item}
-      })
-    }
+        path: "/my/okShopping",
+        query: { item },
+      });
+    },
   },
 };
 </script>

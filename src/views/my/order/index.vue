@@ -74,55 +74,66 @@
             src="../../../assets/img/Group 427320023.png"
             alt=""
           />
-          <div v-else>
-            <div class="card" v-for="item in orderList" :key="item.id">
-              <div class="card-title">
-                <div class="card-img">
-                  <div>
-                    <img
-                      src="../../../assets/img/logo.png"
-                      alt=""
-                      style="width: 20px; height: 20px"
-                    />
+          <div v-else class="item-box van-clearfix">
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+              <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <div class="card" v-for="item in orderList" :key="item.id">
+                  <div class="card-title">
+                    <div class="card-img">
+                      <div>
+                        <img
+                          src="../../../assets/img/logo.png"
+                          alt=""
+                          style="width: 20px; height: 20px"
+                        />
+                      </div>
+                      <span>{{ item.goods_name }}</span>
+                    </div>
+                    <div class="card-text">待支付</div>
                   </div>
-                  <span>{{ item.goods_name }}</span>
-                </div>
-                <div class="card-text">待支付</div>
-              </div>
-              <div class="card-middle">
-                <div>
-                  <img
-                    :src="item.goods_image"
-                    alt=""
-                    style="width: 106px; height: 106px"
-                  />
-                </div>
-                <div>
-                  <div class="card-price">
-                    <div class="card-price-title">{{ item.goods_name }}</div>
-                    <div class="card-prices">￥{{ item.unit_price }}</div>
+                  <div class="card-middle">
+                    <div>
+                      <img
+                        :src="item.goods_image"
+                        alt=""
+                        style="width: 106px; height: 106px"
+                      />
+                    </div>
+                    <div>
+                      <div class="card-price">
+                        <div class="card-price-title">
+                          {{ item.goods_name }}
+                        </div>
+                        <div class="card-prices">￥{{ item.unit_price }}</div>
+                      </div>
+                      <div class="card-default">
+                        <div class="card-defaults">默认</div>
+                        <div class="card-default-one">x{{ item.sale_num }}</div>
+                      </div>
+                      <div class="card-answer">
+                        <div>应付:￥{{ item.pay_money }}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="card-default">
-                    <div class="card-defaults">默认</div>
-                    <div class="card-default-one">x{{ item.sale_num }}</div>
+                  <div class="card-btn">
+                    <div class="card-btn-cancel" @click="cancelBtn(item.id)">
+                      取消订单
+                    </div>
+                    <div
+                      class="card-btn-go"
+                      @click="$router.push('/my/okShopping')"
+                    >
+                      去支付
+                    </div>
                   </div>
-                  <div class="card-answer">
-                    <div>应付:￥{{ item.pay_money }}</div>
-                  </div>
                 </div>
-              </div>
-              <div class="card-btn">
-                <div class="card-btn-cancel" @click="cancelBtn(item.id)">
-                  取消订单
-                </div>
-                <div
-                  class="card-btn-go"
-                  @click="$router.push('/my/okShopping')"
-                >
-                  去支付
-                </div>
-              </div>
-            </div>
+              </van-list>
+            </van-pull-refresh>
           </div>
         </div>
       </van-tab>
@@ -134,55 +145,66 @@
             src="../../../assets/img/Group 427320023.png"
             alt=""
           />
-          <div v-else>
-            <div class="card" v-for="item in orderList" :key="item.id">
-              <div class="card-title">
-                <div class="card-img">
-                  <div>
-                    <img
-                      src="../../../assets/img/logo.png"
-                      alt=""
-                      style="width: 20px; height: 20px"
-                    />
+          <div v-else class="item-box van-clearfix">
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+              <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <div class="card" v-for="item in orderList" :key="item.id">
+                  <div class="card-title">
+                    <div class="card-img">
+                      <div>
+                        <img
+                          src="../../../assets/img/logo.png"
+                          alt=""
+                          style="width: 20px; height: 20px"
+                        />
+                      </div>
+                      <span>{{ item.goods_name }}</span>
+                    </div>
+                    <div class="card-text">待收货</div>
                   </div>
-                  <span>{{ item.goods_name }}</span>
-                </div>
-                <div class="card-text">待收货</div>
-              </div>
-              <div class="card-middle">
-                <div>
-                  <img
-                    :src="item.goods_image"
-                    alt=""
-                    style="width: 106px; height: 106px"
-                  />
-                </div>
-                <div>
-                  <div class="card-price">
-                    <div class="card-price-title">{{ item.goods_name }}</div>
-                    <div class="card-prices">￥{{ item.unit_price }}</div>
+                  <div class="card-middle">
+                    <div>
+                      <img
+                        :src="item.goods_image"
+                        alt=""
+                        style="width: 106px; height: 106px"
+                      />
+                    </div>
+                    <div>
+                      <div class="card-price">
+                        <div class="card-price-title">
+                          {{ item.goods_name }}
+                        </div>
+                        <div class="card-prices">￥{{ item.unit_price }}</div>
+                      </div>
+                      <div class="card-default">
+                        <div class="card-defaults">默认</div>
+                        <div class="card-default-one">x{{ item.sale_num }}</div>
+                      </div>
+                      <div class="card-answer">
+                        <div>应付:￥{{ item.pay_money }}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="card-default">
-                    <div class="card-defaults">默认</div>
-                    <div class="card-default-one">x{{ item.sale_num }}</div>
+                  <div class="card-btn">
+                    <div class="card-btn-cancel" @click="refund(item.id)">
+                      申请退款
+                    </div>
+                    <div class="card-btn-cancel" @click="cancelBtn(item.id)">
+                      取消订单
+                    </div>
+                    <div class="card-btn-go" @click="putAway(item.id)">
+                      确认收货
+                    </div>
                   </div>
-                  <div class="card-answer">
-                    <div>应付:￥{{ item.pay_money }}</div>
-                  </div>
                 </div>
-              </div>
-              <div class="card-btn">
-                <div class="card-btn-cancel" @click="refund(item.id)">
-                  申请退款
-                </div>
-                <div class="card-btn-cancel" @click="cancelBtn(item.id)">
-                  取消订单
-                </div>
-                <div class="card-btn-go" @click="putAway(item.id)">
-                  确认收货
-                </div>
-              </div>
-            </div>
+              </van-list>
+            </van-pull-refresh>
           </div>
         </div>
       </van-tab>
@@ -194,48 +216,59 @@
             src="../../../assets/img/Group 427320023.png"
             alt=""
           />
-          <div v-else>
-            <div class="card" v-for="item in orderList" :key="item.id">
-              <div class="card-title">
-                <div class="card-img">
-                  <div>
-                    <img
-                      src="../../../assets/img/logo.png"
-                      alt=""
-                      style="width: 20px; height: 20px"
-                    />
+          <div v-else class="item-box van-clearfix">
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+              <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <div class="card" v-for="item in orderList" :key="item.id">
+                  <div class="card-title">
+                    <div class="card-img">
+                      <div>
+                        <img
+                          src="../../../assets/img/logo.png"
+                          alt=""
+                          style="width: 20px; height: 20px"
+                        />
+                      </div>
+                      <span>{{ item.goods_name }}</span>
+                    </div>
+                    <div class="card-text">已完成</div>
                   </div>
-                  <span>{{ item.goods_name }}</span>
+                  <div class="card-middle">
+                    <div>
+                      <img
+                        :src="item.goods_image"
+                        alt=""
+                        style="width: 106px; height: 106px"
+                      />
+                    </div>
+                    <div>
+                      <div class="card-price">
+                        <div class="card-price-title">
+                          {{ item.goods_name }}
+                        </div>
+                        <div class="card-prices">￥{{ item.unit_price }}</div>
+                      </div>
+                      <div class="card-default">
+                        <div class="card-defaults">默认</div>
+                        <div class="card-default-one">x{{ item.sale_num }}</div>
+                      </div>
+                      <div class="card-answer">
+                        <div>应付:￥{{ item.pay_money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-btn">
+                    <!-- <div class="card-btn-cancel">取消订单</div> -->
+                    <div class="card-btn-go">已完成</div>
+                  </div>
                 </div>
-                <div class="card-text">已完成</div>
-              </div>
-              <div class="card-middle">
-                <div>
-                  <img
-                    :src="item.goods_image"
-                    alt=""
-                    style="width: 106px; height: 106px"
-                  />
-                </div>
-                <div>
-                  <div class="card-price">
-                    <div class="card-price-title">{{ item.goods_name }}</div>
-                    <div class="card-prices">￥{{ item.unit_price }}</div>
-                  </div>
-                  <div class="card-default">
-                    <div class="card-defaults">默认</div>
-                    <div class="card-default-one">x{{ item.sale_num }}</div>
-                  </div>
-                  <div class="card-answer">
-                    <div>应付:￥{{ item.pay_money }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-btn">
-                <!-- <div class="card-btn-cancel">取消订单</div> -->
-                <div class="card-btn-go">已完成</div>
-              </div>
-            </div>
+              </van-list>
+            </van-pull-refresh>
           </div>
         </div>
       </van-tab>
@@ -247,48 +280,59 @@
             src="../../../assets/img/Group 427320023.png"
             alt=""
           />
-          <div v-else>
-            <div class="card" v-for="item in orderList" :key="item.id">
-              <div class="card-title">
-                <div class="card-img">
-                  <div>
-                    <img
-                      src="../../../assets/img/logo.png"
-                      alt=""
-                      style="width: 20px; height: 20px"
-                    />
+          <div v-else class="item-box van-clearfix">
+            <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+              <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <div class="card" v-for="item in orderList" :key="item.id">
+                  <div class="card-title">
+                    <div class="card-img">
+                      <div>
+                        <img
+                          src="../../../assets/img/logo.png"
+                          alt=""
+                          style="width: 20px; height: 20px"
+                        />
+                      </div>
+                      <span>{{ item.goods_name }}</span>
+                    </div>
+                    <div class="card-text">已关闭</div>
                   </div>
-                  <span>{{ item.goods_name }}</span>
+                  <div class="card-middle">
+                    <div>
+                      <img
+                        :src="item.goods_image"
+                        alt=""
+                        style="width: 106px; height: 106px"
+                      />
+                    </div>
+                    <div>
+                      <div class="card-price">
+                        <div class="card-price-title">
+                          {{ item.goods_name }}
+                        </div>
+                        <div class="card-prices">￥{{ item.unit_price }}</div>
+                      </div>
+                      <div class="card-default">
+                        <div class="card-defaults">默认</div>
+                        <div class="card-default-one">x{{ item.sale_num }}</div>
+                      </div>
+                      <div class="card-answer">
+                        <div>应付:￥{{ item.pay_money }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-btn">
+                    <!-- <div class="card-btn-cancel">取消订单</div> -->
+                    <div class="card-btn-go">已关闭</div>
+                  </div>
                 </div>
-                <div class="card-text">已关闭</div>
-              </div>
-              <div class="card-middle">
-                <div>
-                  <img
-                    :src="item.goods_image"
-                    alt=""
-                    style="width: 106px; height: 106px"
-                  />
-                </div>
-                <div>
-                  <div class="card-price">
-                    <div class="card-price-title">{{ item.goods_name }}</div>
-                    <div class="card-prices">￥{{ item.unit_price }}</div>
-                  </div>
-                  <div class="card-default">
-                    <div class="card-defaults">默认</div>
-                    <div class="card-default-one">x{{ item.sale_num }}</div>
-                  </div>
-                  <div class="card-answer">
-                    <div>应付:￥{{ item.pay_money }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-btn">
-                <!-- <div class="card-btn-cancel">取消订单</div> -->
-                <div class="card-btn-go">已关闭</div>
-              </div>
-            </div>
+              </van-list>
+            </van-pull-refresh>
           </div>
         </div>
       </van-tab>
@@ -303,7 +347,7 @@ export default {
   data() {
     return {
       active: 0,
-      total: 40,
+      total: '',
       orderList: [], //订单详情
       pageNum: 1,
       pageSize: 10,
@@ -363,7 +407,8 @@ export default {
         pageSize: this.pageSize,
       };
       let res = await orderList(data);
-      this.orderList = this.orderList.concat(res.data);
+      this.orderList = this.orderList.concat(res.data.lists);
+      this.total = res.data.count
       if (this.orderList.length == 0) {
         this.isshow = true;
       }

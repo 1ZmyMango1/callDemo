@@ -18,7 +18,7 @@
               <van-checkbox
                 checked-color="#F55E68"
                 v-model="item.isSelected"
-                @change="btnHandel($event, index, item)"
+                @click="btnHandel($event, index, item)"
               ></van-checkbox>
             </div>
             <div class="dec fl">
@@ -61,12 +61,12 @@
     <!-- 底部付款区域 -->
     <div class="footer">
       <div class="left fl">
-        <van-checkbox
-          checked-color="#F55E68"
-          v-model="selAll"
-          @click="changeVal"
-          >全选</van-checkbox
-        >
+        <!-- <van-checkbox
+            checked-color="#F55E68"
+            v-model="selAll"
+            @click="changeVal"
+            >全选</van-checkbox
+          > -->
       </div>
       <div class="fr rigth" v-if="this.btnFlag">
         <div class="allPrice fl">
@@ -88,6 +88,7 @@
 <script>
 import { Toast } from "vant";
 import { getCart, editNum, clearCart } from "@/api/user";
+import global from "@/utils/global";
 export default {
   name: "shopping",
   data() {
@@ -103,6 +104,7 @@ export default {
     };
   },
   created() {
+    console.log(this.GOODS_INFO);
     this.initPrice();
     this.getCart();
   },
@@ -141,17 +143,27 @@ export default {
     // 选中商品计算价格
     btnHandel(flag, i, item) {
       console.log(flag, i, item);
+      this.allPrice = 0;
+      this.shopList.forEach((e, index) => {
+        if (i != index) {
+          this.$set(this.shopList[index], "isSelected", false);
+        }
+      });
       this.list = item;
-      this.$set(this.shopList[i], "isSelected", flag);
-      let allSEl = this.shopList.filter((e) => !e.isSelected);
-      allSEl.length == "0" ? (this.selAll = true) : (this.selAll = false);
-      flag
-        ? (this.allPrice += Number(
-            this.shopList[i].goods_price * this.shopList[i].buy_num
-          ))
-        : (this.allPrice -= Number(
-            this.shopList[i].goods_price * this.shopList[i].buy_num
-          ));
+
+      this.allPrice = Number(
+        this.shopList[i].goods_price * this.shopList[i].buy_num
+      );
+      // this.$set(this.shopList[i], "isSelected", flag);
+      // let allSEl = this.shopList.filter((e) => !e.isSelected);
+      // allSEl.length == "0" ? (this.selAll = true) : (this.selAll = false);
+      // flag
+      //   ? (this.allPrice += Number(
+      //       this.shopList[i].goods_price * this.shopList[i].buy_num
+      //     ))
+      //   : (this.allPrice -= Number(
+      //       this.shopList[i].goods_price * this.shopList[i].buy_num
+      //     ));
     },
     // 增加
     async add(item, index) {
@@ -215,11 +227,10 @@ export default {
     okShopping() {
       if (this.list.length == "0") {
         Toast("请选择商品");
-        if (this.list.length > "1") {
-          Toast("只能选择一件商品哦！");
-        }
       } else {
-       let list = JSON.stringify(this.list)
+        let list = this.list;
+        // debugger;
+        global.setInfo(this.list);
         this.$router.push({
           path: "/my/okShopping",
           query: {

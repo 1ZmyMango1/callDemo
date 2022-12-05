@@ -35,6 +35,18 @@ import 'vant/lib/index.less';
 import 'vant/lib/button/style/less';
 
 
+// Vue.mixin({
+//   data() {
+//     return {
+//       GOODS_INFO: null
+//     }
+//   },
+//   methods:{
+//     EDIT_GOODS_INFO(data){
+//       this.GOODS_INFO=data
+//     }
+//   }
+// })
 
 
 // import 'qrcodejs2'

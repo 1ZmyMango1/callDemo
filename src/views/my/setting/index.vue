@@ -4,7 +4,8 @@
 
     <!-- 头像 -->
     <div class="box-img">
-      <img style="width: 80px; height: 80px" :src="img" alt="" />
+      <van-uploader v-model="fileList" :after-read="afterRead" />
+      <!-- <img style="width: 80px; height: 80px" :src="img" alt="" /> -->
     </div>
 
     <!-- 信息 -->
@@ -291,11 +292,19 @@ import {
   editUser,
   replacePhone,
   realNameCertification,
-  setPassword
+  setPassword,
+  uploadFile,
 } from "@/api/user";
 export default {
   data() {
     return {
+      fileList: [
+        // {
+        //   url: "https://img01.yzcdn.cn/vant/leaf.jpg",
+        //   status: "uploading",
+        //   message: "上传中...",
+        // },
+      ],
       img: "", //头像
       sex: "", //性别
       showPicker: "", //性别弹框
@@ -330,6 +339,26 @@ export default {
   },
   mounted() {},
   methods: {
+    afterRead(val) {
+      let file = val.file;
+      let filepath = file.name;
+      let type = filepath.substring(filepath.indexOf("."));
+      let arr = [".png", ".jpg", "jpeg"];
+      if (file.size / 1024 / 1024 > 2) {
+        Toast("文件最大为2M");
+        return;
+      }
+      if (arr.indexOf(type) == -1) {
+        Toast("文件类型错误");
+        return;
+      }
+      let formDate = new FormData();
+      formDate.append(file, file);
+      uploadFile(formDate).then((res) => {
+        console.log(res);
+      });
+      console.log(val);
+    },
     // 个人信息
     async userlLogin() {
       let res = await userlLogin();
@@ -480,49 +509,49 @@ export default {
       this.showpassword = true;
     },
     // 设置密码确认按钮
-   async okPassword() {
+    async okPassword() {
       let data = {
-        pwd_type:0,
-        password:this.textPasswordChanges,
-        captcha:this.textPasswordCode
-      }
-      let res = await setPassword(data)
+        pwd_type: 0,
+        password: this.textPasswordChanges,
+        captcha: this.textPasswordCode,
+      };
+      let res = await setPassword(data);
       if (this.textPasswordCode == "") {
         Toast("请填写验证码");
       } else if (this.textPasswordChange == "") {
         Toast("请填写新密码");
       } else if (this.textPasswordChanges == "") {
         Toast("请填写确认密码");
-      }else if(this.textPasswordChanges === this.textPasswordChange){
+      } else if (this.textPasswordChanges === this.textPasswordChange) {
         Toast("两次密码不一致");
       }
 
       this.showpassword = false;
-      this.textPasswordCode = ''
-      this.textPasswordChange = ''
-      this.textPasswordChanges = ''
+      this.textPasswordCode = "";
+      this.textPasswordChange = "";
+      this.textPasswordChanges = "";
     },
     // 设置密码取消按钮
     cancelPassword() {
       this.showpassword = false;
-      this.textPasswordCode = ''
-      this.textPasswordChange = ''
-      this.textPasswordChanges = ''
+      this.textPasswordCode = "";
+      this.textPasswordChange = "";
+      this.textPasswordChanges = "";
     },
-   async codePassword() {
+    async codePassword() {
       this.passwordCode = false;
       this.passwordCodes = true;
       try {
         let data = {
-          phone:this.textPassword
-        }
-        let res = await securityCode(data)
-        if(res.code != 0){
-          Toast('验证码发送失败')
+          phone: this.textPassword,
+        };
+        let res = await securityCode(data);
+        if (res.code != 0) {
+          Toast("验证码发送失败");
         }
       } catch (error) {
         console.log(error);
-      } 
+      }
     },
   },
 };

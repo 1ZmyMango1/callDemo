@@ -1,11 +1,15 @@
 <template>
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
-    <van-nav-bar title="确定订单收货地址" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar
+      title="确定订单收货地址"
+      left-arrow
+      @click-left="onClickLeft"
+    />
 
     <div class="address" v-for="(item, index) in list" :key="index">
       <div class="address-info">
-        <div  @click.stop="onSelect(item)">{{ item.name }}&#8195;&#8195;</div>
-        <div  @click.stop="onSelect(item)">{{ item.tel }}</div>
+        <div @click.stop="onSelect(item)">{{ item.name }}&#8195;&#8195;</div>
+        <div @click.stop="onSelect(item)">{{ item.tel }}</div>
         <div @click="delBtn(item)">
           <img src="../../../assets/img/icon_cancel.png" alt="" />
         </div>
@@ -36,11 +40,11 @@
 
 <script>
 import { Toast } from "vant";
-import { addressList , delAddress } from "@/api/user";
+import { addressList, delAddress } from "@/api/user";
 export default {
   data() {
     return {
-      isDefault:false,
+      isDefault: false,
       list: [],
     };
   },
@@ -79,21 +83,21 @@ export default {
 
     // 删除
     async delBtn(item) {
-        let data = {
-          id: item.id,
-        };
-        let res = await delAddress(data);
-        Toast("删除成功");
-        this.addressList()
+      let data = {
+        id: item.id,
+      };
+      let res = await delAddress(data);
+      Toast("删除成功");
+      this.addressList();
     },
 
     // 选中的地址
-    // onSelect(item) {
-    //   this.$router.push({
-    //     path: "/my/okShopping",
-    //     params: { item },
-    //   });
-    // },
+    onSelect(item) {
+      this.$router.push({
+        path: "/my/okShopping",
+        query: { item: item, list: this.$route.query.data },
+      });
+    },
   },
 };
 </script>

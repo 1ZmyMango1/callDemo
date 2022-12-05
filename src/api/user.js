@@ -225,3 +225,14 @@ export function clearCart(params){
     params
   })
 }
+// 上传文件
+export function uploadFile(data){
+  return http({
+    url:'/Pub/uploadFile',
+    method:'post',
+    headers: {
+            "Content-type": "multipart/form-data"
+          },
+    data
+  })
+}

@@ -2,13 +2,18 @@
   <div class="box">
     <van-nav-bar title="确认订单" left-arrow @click-left="onClickLeft" />
 
-    <div class="box-addres" @click.stop="$router.push('/my/add-address')">
+    <div class="box-addres" @click.stop="toSelAdd">
       <div class="box-addres-img">
         <img src="../../../assets/img/icon_addr.png" alt="" />
       </div>
-      <div class="box-addres-go" @click="onAddrress" v-for="(items,index) in address" :key="index">
-        <div class="text">{{items.name}}</div>
-        <div class="texts">{{items.address}}</div>
+      <div
+        class="box-addres-go"
+        @click="onAddrress"
+        v-for="(items, index) in address"
+        :key="index"
+      >
+        <div class="text">{{ items.name }}</div>
+        <div class="texts">{{ items.address }}</div>
       </div>
       <div class="box-addres-imgs">
         <img src="../../../assets/img/icon_more2.png" alt="" />
@@ -63,7 +68,7 @@
     <div class="merchandise">
       <div class="merchandise-top">
         <div>商品金额</div>
-        <div>￥{{goods.goods_price}}</div>
+        <div>￥{{ goods.goods_price }}</div>
       </div>
       <div class="merchandise-buttom">
         <div>运费</div>
@@ -72,8 +77,13 @@
     </div>
 
     <div class="btn">
-      <div class="btn-left"><div class="btn-left-one">合计：</div><div class="btn-left-two">￥{{allMoney}}</div></div>    
-      <div class="btn-right"><img src="../../../assets/img/button_go.png" alt="" /></div>
+      <div class="btn-left">
+        <div class="btn-left-one">合计：</div>
+        <div class="btn-left-two">￥{{ allMoney }}</div>
+      </div>
+      <div class="btn-right">
+        <img src="../../../assets/img/button_go.png" alt="" />
+      </div>
     </div>
   </div>
 </template>
@@ -81,55 +91,64 @@
 <script>
 import { Toast } from "vant";
 import { goodsOrderDetail } from "@/api/user";
+import global from "@/utils/global";
 export default {
   data() {
     return {
       value: "",
       checked: true,
       checkeds: false,
-      address:[],//默认地址
-      goods:[],//商品信息
-      item:[],//地址
-      list:[],
-      allMoney:0//商品总价
+      address: [], //默认地址
+      goods: [], //商品信息
+      item: [], //地址
+      list: [],
+      allMoney: 0, //商品总价
     };
   },
   created() {
-    this.item = this.$route.query.item
-    this.address = this.item
-    console.log(this.item,'每一项地址');
+    console.log(global.state);
+    this.item = this.$route.query.item;
+    this.address = this.item;
+    // debugger;
 
-    this.list = JSON.parse(this.$route.query.list)
+    this.list = this.$route.query.list;
     // this.list = this.$route.query.list
     // console.log(this.list,this.list.goods_id,'商品id');
 
-    this.goodsOrderDetail()
+    this.goodsOrderDetail();
   },
   mounted() {},
   methods: {
+    toSelAdd() {
+      this.$router.push({
+        path: "/my/add-address",
+        query: {
+          data: this.list,
+        },
+      });
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
 
     // 商品信息
     // async await 是异步 会等待执行完再 执行下面代码
-    async goodsOrderDetail(){
+    async goodsOrderDetail() {
       try {
         let data = {
-        goods_id: this.list.goods_id
-      }
-      let res = await goodsOrderDetail(data)
-      this.address = res.data.address
-      this.goods = res.data.goods
-      this.allMoney = this.list.goods_price * this.list.buy_num
-      } catch (error) {
-      }
+          goods_id: this.list.goods_id,
+        };
+        let res = await goodsOrderDetail(data);
+        this.address = res.data.address;
+        this.goods = res.data.goods;
+        this.allMoney = this.list.goods_price * this.list.buy_num;
+      } catch (error) {}
     },
 
     // 去地址详情页面
-    onAddrress(){
-      this.$router.push("/my/add-address")
-    }
+    onAddrress() {
+      this.$router.push("/my/add-address");
+    },
   },
 };
 </script>
@@ -273,11 +292,11 @@ export default {
     line-height: 45px;
     margin-left: 16px;
     .btn-left-one {
-        font-size: 14px;
+      font-size: 14px;
     }
     .btn-left-two {
-        font-size: 14px;
-        color: #F55E68;
+      font-size: 14px;
+      color: #f55e68;
     }
   }
   .btn-right {

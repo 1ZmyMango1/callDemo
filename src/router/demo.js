@@ -166,6 +166,14 @@ const appRoute = [
 		}
 	},
 	{
+		path:'/my/add-address',
+		name:'add-address',
+		component:() => import('../views/shopping/okShopping/add-address.vue'),
+		meta:{
+			title:'确认订单地址',
+		}
+	},
+	{
 		path:'/demo/examine',
 		name:'examine',
 		component:() => import('../views/demo/examine/index.vue'),

@@ -18,7 +18,7 @@
               <van-checkbox
                 checked-color="#F55E68"
                 v-model="item.isSelected"
-                @change="btnHandel($event, index)"
+                @change="btnHandel($event, index, item)"
               ></van-checkbox>
             </div>
             <div class="dec fl">
@@ -87,7 +87,7 @@
 
 <script>
 import { Toast } from "vant";
-import { getCart, editNum } from "@/api/user";
+import { getCart, editNum, clearCart } from "@/api/user";
 export default {
   name: "shopping",
   data() {
@@ -97,17 +97,9 @@ export default {
       btnFlag: true,
       timer: null,
       isSelected: false,
-      shopList: [
-        // {
-        //   id: "0",
-        //   name: "这是一件商品1",
-        //   num: 6,
-        //   price: "206",
-        //   isSelected: true,
-        // },
-      ],
+      shopList: [],
       itemList: [], //购物车数据
-      id: "",
+      list: [],
     };
   },
   created() {
@@ -127,7 +119,7 @@ export default {
         e.isSelected = this.selAll;
       });
     },
-    //   注意，切换删除按钮的时候要重新拉取下用户的购物车数据
+    //  注意，切换删除按钮的时候要重新拉取下用户的购物车数据
     filterBtn() {
       this.btnFlag = !this.btnFlag;
       if (!this.btnFlag) {
@@ -146,9 +138,10 @@ export default {
         Toast.clear();
       }, 1000);
     },
-    //   选中商品计算价格
-    btnHandel(flag, i) {
-      console.log(flag, i);
+    // 选中商品计算价格
+    btnHandel(flag, i, item) {
+      console.log(flag, i, item);
+      this.list = item;
       this.$set(this.shopList[i], "isSelected", flag);
       let allSEl = this.shopList.filter((e) => !e.isSelected);
       allSEl.length == "0" ? (this.selAll = true) : (this.selAll = false);
@@ -160,7 +153,7 @@ export default {
             this.shopList[i].goods_price * this.shopList[i].buy_num
           ));
     },
-    //   增加
+    // 增加
     async add(item, index) {
       let newNum = this.shopList[index].buy_num + 5;
       this.$set(this.shopList[index], "buy_num", newNum);
@@ -176,7 +169,7 @@ export default {
         }
       } catch (error) {}
     },
-    //   减少
+    // 减少
     async del(item, index) {
       let newNum = this.shopList[index].buy_num - 5;
       this.$set(this.shopList[index], "buy_num", newNum);
@@ -193,11 +186,11 @@ export default {
       } catch (error) {}
     },
     //   删除购物车的物品
-    delGoods() {
+    async delGoods() {
       let selArr = [];
       selArr = this.shopList.filter((e) => e.isSelected);
       if (selArr.length == "0") {
-        Toast("请选中物品");
+        Toast("请选中商品");
         return;
       }
       for (let i = 0; i < this.shopList.length; i++) {
@@ -209,35 +202,44 @@ export default {
           }
         }
       }
+      console.log(selArr);
+
+      let data = {
+        del_type: 0,
+        goods_ids: [this.list.goods_id],
+      };
+      let res = await clearCart(data);
     },
 
     // 去结算按钮
     okShopping() {
-      this.$router.push({
-        path: "/my/okShopping",
-        query: {
-          id: this.shopList.goods_id,
-        },
-      });
-      // if(this.allPrice >= 0){
-      //   Toast('请选择商品');
-      // }else if(this.allPrice <= 0){
-      //   this.$router.push('/my/okShopping')
-      // }
+      if (this.list.length == "0") {
+        Toast("请选择商品");
+        if (this.list.length > "1") {
+          Toast("只能选择一件商品哦！");
+        }
+      } else {
+       let list = JSON.stringify(this.list)
+        this.$router.push({
+          path: "/my/okShopping",
+          query: {
+            list: list,
+          },
+        });
+      }
     },
 
     // 获取购物车数据
     async getCart() {
       try {
         let res = await getCart();
-        console.log(res);
+        // console.log(res);
         let arr = res.data;
         arr.map((e) => {
           e.isSelected = false;
           return e;
         });
         this.shopList = arr;
-        // debugger;
       } catch (error) {}
     },
   },

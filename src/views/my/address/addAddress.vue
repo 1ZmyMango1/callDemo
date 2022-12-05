@@ -46,15 +46,13 @@
       </div>
     </van-form>
 
-    <div class="delBtn" @click="delBtn">删除</div>
-
     <Address ref="addr" @save="addSave"></Address>
   </div>
 </template>
 
 <script>
 import Address from "../../components/address.vue";
-import { addUserAddress , delAddress } from "@/api/user";
+import { addUserAddress } from "@/api/user";
 export default {
   components: {
     Address,
@@ -97,7 +95,7 @@ export default {
       this.$refs["addr"].show = true;
     },
     onClickLeft() {
-      this.$router.push("/my/address");
+      this.$router.go(-1);
     },
 
     onSubmit(values) {
@@ -113,25 +111,8 @@ export default {
         address: this.text,
       };
       let res = await addUserAddress(data);
-      this.$router.push('/my/address')
+      this.$router.go(-1)
     },
-
-    // 删除
-    async delBtn(){
-      if(this.idAddress > 0){
-        let data = {
-          id:this.idAddress
-        }
-        let res = await delAddress(data)
-        this.$router.push('/my/address')
-      }else {
-        this.username = ''
-        this.password = ''
-        this.text = ''
-        this.addressVal = ''
-      }
-      
-    }
   },
 };
 </script>

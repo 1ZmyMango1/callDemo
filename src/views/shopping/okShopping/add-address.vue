@@ -1,17 +1,17 @@
 <template>
   <div class="box" style="background-color: #f5f5f5; height: 100vh">
-    <van-nav-bar title="收货地址" left-arrow @click-left="onClickLeft" />
+    <van-nav-bar title="确定订单收货地址" left-arrow @click-left="onClickLeft" />
 
     <div class="address" v-for="(item, index) in list" :key="index">
       <div class="address-info">
-        <div>{{ item.name }}&#8195;&#8195;</div>
-        <div>{{ item.tel }}</div>
+        <div  @click.stop="onSelect(item)">{{ item.name }}&#8195;&#8195;</div>
+        <div  @click.stop="onSelect(item)">{{ item.tel }}</div>
         <div @click="delBtn(item)">
           <img src="../../../assets/img/icon_cancel.png" alt="" />
         </div>
       </div>
 
-      <div class="address-add">{{ item.address }}</div>
+      <div class="address-add" @click="onSelect(item)">{{ item.address }}</div>
 
       <div class="address-btn">
         <div>
@@ -86,6 +86,14 @@ export default {
         Toast("删除成功");
         this.addressList()
     },
+
+    // 选中的地址
+    // onSelect(item) {
+    //   this.$router.push({
+    //     path: "/my/okShopping",
+    //     params: { item },
+    //   });
+    // },
   },
 };
 </script>

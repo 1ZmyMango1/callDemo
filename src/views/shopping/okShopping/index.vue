@@ -2,13 +2,13 @@
   <div class="box">
     <van-nav-bar title="确认订单" left-arrow @click-left="onClickLeft" />
 
-    <div class="box-addres" @click.stop="$router.push('/my/address')">
+    <div class="box-addres" @click.stop="$router.push('/my/add-address')">
       <div class="box-addres-img">
         <img src="../../../assets/img/icon_addr.png" alt="" />
       </div>
-      <div class="box-addres-go">
-        <div class="text">晨晨</div>
-        <div class="texts">浙江省 杭州市 滨江区 滨康小区</div>
+      <div class="box-addres-go" @click="onAddrress" v-for="(items,index) in address" :key="index">
+        <div class="text">{{items.name}}</div>
+        <div class="texts">{{items.address}}</div>
       </div>
       <div class="box-addres-imgs">
         <img src="../../../assets/img/icon_more2.png" alt="" />
@@ -17,11 +17,11 @@
 
     <div>
       <van-card
-        num="1"
-        price="206.00"
+        :num="list.buy_num"
+        :price="goods.goods_price"
         desc="默认"
-        title="商品标题"
-        thumb="https://img01.yzcdn.cn/vant/ipad.jpeg"
+        :title="goods.goods_name"
+        :thumb="goods.goods_image"
       ></van-card>
     </div>
 
@@ -63,7 +63,7 @@
     <div class="merchandise">
       <div class="merchandise-top">
         <div>商品金额</div>
-        <div>￥206</div>
+        <div>￥{{goods.goods_price}}</div>
       </div>
       <div class="merchandise-buttom">
         <div>运费</div>
@@ -72,7 +72,7 @@
     </div>
 
     <div class="btn">
-      <div class="btn-left"><div class="btn-left-one">合计：</div><div class="btn-left-two">￥206</div></div>    
+      <div class="btn-left"><div class="btn-left-one">合计：</div><div class="btn-left-two">￥{{allMoney}}</div></div>    
       <div class="btn-right"><img src="../../../assets/img/button_go.png" alt="" /></div>
     </div>
   </div>
@@ -80,24 +80,30 @@
 
 <script>
 import { Toast } from "vant";
-import { goodsList } from "@/api/user";
+import { goodsOrderDetail } from "@/api/user";
 export default {
   data() {
     return {
       value: "",
       checked: true,
       checkeds: false,
-      merchandise:[],
-      item:[],
-      id:''
+      address:[],//默认地址
+      goods:[],//商品信息
+      item:[],//地址
+      list:[],
+      allMoney:0//商品总价
     };
   },
   created() {
     this.item = this.$route.query.item
+    this.address = this.item
     console.log(this.item,'每一项地址');
 
-    this.id = this.$route.query.id
-    console.log(this.id);
+    this.list = JSON.parse(this.$route.query.list)
+    // this.list = this.$route.query.list
+    // console.log(this.list,this.list.goods_id,'商品id');
+
+    this.goodsOrderDetail()
   },
   mounted() {},
   methods: {
@@ -106,10 +112,23 @@ export default {
     },
 
     // 商品信息
-    async goodsList(){
-      let res = await goodsList()
-      console.log(res);
-      this.merchandise  = res.data
+    // async await 是异步 会等待执行完再 执行下面代码
+    async goodsOrderDetail(){
+      try {
+        let data = {
+        goods_id: this.list.goods_id
+      }
+      let res = await goodsOrderDetail(data)
+      this.address = res.data.address
+      this.goods = res.data.goods
+      this.allMoney = this.list.goods_price * this.list.buy_num
+      } catch (error) {
+      }
+    },
+
+    // 去地址详情页面
+    onAddrress(){
+      this.$router.push("/my/add-address")
     }
   },
 };

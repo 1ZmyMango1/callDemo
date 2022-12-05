@@ -49,12 +49,12 @@
         <div class="buttom-top">
           <div class="top-left">提货商品：0</div>
           <div class="top-right" @click="upGoods">申请提货</div>
-          <div class="top-right">自主认购</div>
+          <div class="top-right" @click="subscription">自主认购</div>
         </div>
         <div class="buttom-two">
           <div class="two-left">折扣卷：0</div>
           <div class="two-rights" @click="particulars">明细</div>
-          <div class="two-right">自主认购</div>
+          <div class="two-right" @click="subscription">自主认购</div>
         </div>
         <div class="buttom-one">
           <div class="one-left">折扣商品：0</div>
@@ -71,12 +71,12 @@
         <div class="base-two">
           <div class="two-left">可售商品：0</div>
           <div class="two-rights" @click="particulars">明细</div>
-          <div class="two-right">委托销售</div>
+          <div class="two-right" @click="market">委托销售</div>
         </div>
         <div class="base-one">
           <div class="one-left">转存商品：0</div>
           <div class="one-right" @click="particulars">明细</div>
-          <div class="one-rights">确认转存</div>
+          <div class="one-rights" @click="unloading">确认转存</div>
         </div>
       </div>
 
@@ -200,7 +200,7 @@ export default {
           goods_num: this.value,
         };
         let res = await addCart(data);
-        this.$router.push("/my/okShopping");
+        this.$router.push("/shopping");
       } else {
         Toast("购买数量默认是 6 哦");
       }
@@ -218,6 +218,22 @@ export default {
     unloading() {
       Notify({
         message: "转存成功",
+        color: "#fff",
+        background: "#F55E68",
+      });
+    },
+    // 委托销售
+    market(){
+      Notify({
+        message: "已委托销售",
+        color: "#fff",
+        background: "#F55E68",
+      });
+    },
+    // 自主认购
+    subscription(){
+      Notify({
+        message: "认购成功",
         color: "#fff",
         background: "#F55E68",
       });
